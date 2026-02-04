@@ -1,0 +1,430 @@
+@use "../../../assets/theme/_var.scss" as *;
+
+.table_box {
+  border-radius: 2rem;
+  border: 0.1rem solid $borderclr3;
+  overflow: hidden;
+
+  &_head {
+    padding: 2.5rem 3rem;
+    background-color: $white;
+
+    h4 {
+      font-weight: 600;
+    }
+  }
+
+  &_tabs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1rem;
+
+    .common_tabs {
+      max-width: 60.3rem;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    @media (max-width: 767px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+
+      .common_tabs {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .table {
+    margin: 0;
+
+    &_heading {
+      span {
+        display: block;
+        font-weight: normal;
+        font-size: 1.4rem;
+        color: $greyText;
+      }
+    }
+
+    .input_group.checkbox_handle {
+      margin-bottom: 0;
+    }
+
+    thead {
+      tr {
+        th {
+          color: $textblack;
+          background: $whiteEFF1F4;
+          font-size: 1.4rem;
+          font-weight: normal;
+          padding: 2rem 1.5rem 2rem;
+          white-space: nowrap;
+
+          &:first-child {
+            padding-left: 3rem;
+            border-top-left-radius: 1.2rem;
+          }
+
+          &:last-child {
+            padding-right: 3rem;
+            border-top-right-radius: 1.2rem;
+          }
+
+          @media (max-width:1439px) {
+            font-size: 1.4rem;
+            padding: 1rem;
+
+            &:first-child {
+              padding-left: 2rem;
+              border-top-left-radius: 1rem;
+              padding-left: 1.5rem;
+            }
+
+            &:last-child {
+              padding-right: 2rem;
+              border-top-right-radius: 1rem;
+              padding-left: 1.5rem;
+            }
+          }
+        }
+      }
+      &.radius_zero {
+        tr {
+          th {
+            &:first-child {
+            border-top-left-radius: 0;
+          }
+
+          &:last-child {
+            border-top-right-radius: 0;
+          }
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid $borderclr3;
+        background: $white;
+
+        &:last-child {
+          border: 0;
+        }
+
+        td {
+          vertical-align: middle;
+          font-size: 1.6rem;
+          font-weight: normal;
+          padding: 1.5rem 2rem 1.6rem;
+          background: transparent;
+          color: $textblack;
+          white-space: nowrap;
+          border: 0;
+
+          &:first-child {
+            padding-left: 3rem;
+            font-weight: 500;
+          }
+
+          &:last-child {
+            padding-right: 3rem;
+          }
+
+          &.no_record_box {
+            text-align: center;
+            padding: 2rem;
+
+            svg {
+              margin-bottom: 2rem;
+              width: 6rem;
+              height: 6rem;
+            }
+
+            p {
+              text-align: center;
+            }
+          }
+
+          .placeholder {
+            border-radius: 2rem;
+          }
+
+          .tag {
+            font-size: 1.4rem;
+          }
+
+          .green,
+          .verified {
+            color: $greenclr2;
+          }
+
+          .reviewing {
+            color: $blueclr1E40AF;
+          }
+
+          .red {
+            color: $red;
+          }
+
+          .yellow,
+          .pending {
+            color: $brown854D0E;
+          }
+
+          .blue_text {
+            color: $blueClr;
+          }
+
+          .purple {
+            color: $purpleClr;
+          }
+
+          .orange {
+            color: $yellowClr3;
+          }
+
+          .status,
+          .percentage {
+            font-size: 1.4rem;
+            padding: 0.7rem 2rem;
+            border-radius: 9rem;
+            font-weight: 500;
+
+            &.category {
+              max-width: 14rem;
+              width: 100%;
+              display: block;
+              text-align: center;
+              padding: 0.9rem 2rem;
+            }
+
+            &.active,
+            &.completed,
+            &.success,
+            &.verified,
+            &.published,
+            &.approved,
+            &.confirmed {
+              background-color: rgba($greenclr2, 0.1);
+              color: $greenclr2;
+            }
+
+            &.pending,
+            &.low,
+            &.maintenance {
+              background-color: rgba($yellowClr3, 0.1);
+              color: $yellowClr3;
+            }
+
+            &.failed,
+            &.suspended,
+            &.flagged,
+            &.high,
+            &.removed {
+              background-color: $redFEE2E2;
+              color: $red;
+            }
+
+            &.orange,
+            &.medium {
+              background-color: $yellowFFEDD5;
+              color: $brown9A3412;
+            }
+
+            &.grey,
+            &.draft,
+            &.closed {
+              background-color: $tableborderclr;
+            }
+
+            &.blue,
+            &.review,
+            &.underReview,
+            &.scheduled,
+            &.feature,
+            &.reviewing {
+              background-color: $lightblueClr;
+              color: $blueClr;
+            }
+
+            &.purple,
+            &.promotion {
+              background-color: $purpleF3E8FF;
+              color: $purpleClr;
+            }
+
+            @media (max-width: 767px) {
+              padding: 0.3rem 1rem;
+            }
+          }
+
+          .hashlink {
+            color: $primaryclr;
+            display: inline-block;
+
+            svg {
+              path {
+                stroke: $primaryclr;
+              }
+            }
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+
+          @media (max-width:1439px) {
+            font-size: 1.4rem;
+            padding: 1rem;
+
+            &:first-child {
+              padding-left: 2rem;
+            }
+
+            &:last-child {
+              padding-right: 2rem;
+            }
+          }
+
+          @media (max-width:1439px) {
+            &:first-child {
+              padding-left: 1.5rem;
+            }
+
+            &:last-child {
+              padding-right: 1.5rem;
+            }
+          }
+
+          &.action_btn {
+            button {
+              padding-right: 0.7rem;
+
+              &:last-child {
+                padding-right: 0;
+              }
+            }
+          }
+
+          &.info {
+            span {
+              font-size: 1.4rem;
+              font-weight: 400;
+              color: $grey6B7280;
+            }
+          }
+
+          .link_text {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            @extend %transition;
+
+            &:hover {
+              color: $primaryclr;
+              @extend %transition;
+            }
+
+            span {
+              width: 1.6rem;
+              height: 2.8rem;
+            }
+          }
+        }
+
+        .table_title {
+          &:first-child {
+            font-weight: 500;
+            padding-left: 4.6rem;
+            position: relative;
+          }
+
+          h6 {
+            font-size: 1.6rem;
+            position: relative;
+
+            &::before {
+              position: absolute;
+              content: "";
+              height: 1rem;
+              width: 1rem;
+              left: -1.9rem;
+              top: 50%;
+              transform: translateY(-50%);
+              background-color: $greenclr2;
+              border-radius: 50%;
+            }
+          }
+
+          span {
+            font-size: 1.4rem;
+            color: $greyText;
+          }
+        }
+
+        .table_action {
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+
+          .common_btn {
+            min-width: 5.5rem;
+            padding: 1rem;
+            height: 3.8rem;
+            border-radius: 0.8rem;
+          }
+
+          span {
+            flex-shrink: 0;
+
+            svg {
+              height: 3.6rem;
+              width: 3.6rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.table_title {
+    border-radius: 1.2rem;
+
+    .table {
+      thead {
+        tr {
+          th {
+            &:first-child {
+              border-top-left-radius: 0;
+            }
+
+            &:last-child {
+              border-top-right-radius: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width:1439px) {
+    &_head {
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 1279px) {
+    border-radius: 1rem;
+
+    &_head {
+      padding: 1.5rem;
+    }
+  }
+}

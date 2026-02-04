@@ -1,0 +1,14 @@
+@use "../../assets/theme/_var.scss" as *;
+
+.create_account_form {
+  background-color: $white;
+  padding: 3rem;
+  border-radius: 2rem;
+  border: 0.1rem solid $borderclr3;
+  margin-top: 3rem;
+
+  h3 {
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+}

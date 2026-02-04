@@ -1,0 +1,214 @@
+@use "../../assets/theme/_var.scss" as *;
+
+.marketplace-page {
+  .marketplace-header {
+    margin-bottom: 3.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+
+    .header-left {
+      h1 {
+        margin-bottom: 0.8rem;
+      }
+
+      p {
+        color: $theme-text-secondary;
+        font-size: 1.6rem;
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+
+      .search-wrapper {
+        min-width: 30rem;
+
+        .marketplace-search {
+          margin-bottom: 0;
+
+          .input_group_inner {
+            .form-control {
+              height: 4.8rem;
+              background-color: $theme-card-bg;
+              border: 1px solid $theme-border;
+              border-radius: 1.2rem;
+              padding-left: 1.6rem;
+
+              &:focus {
+                border-color: $primary;
+                box-shadow: 0 0 0 2px rgba($primary, 0.1);
+              }
+            }
+          }
+        }
+      }
+
+      .filter-group {
+        display: flex;
+        gap: 1.2rem;
+        align-items: center;
+
+        .marketplace-select {
+          margin-bottom: 0;
+          min-width: 16rem;
+
+          .form__control {
+            height: 4.8rem;
+            background-color: $theme-card-bg;
+            border: 1px solid $theme-border;
+            border-radius: 1.2rem;
+
+            .form__placeholder,
+            .form__single-value {
+              color: $theme-text;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+    gap: 3rem;
+
+    .product-card {
+      background-color: $theme-card-bg;
+      border: 1px solid $theme-border;
+      border-radius: 2rem;
+      overflow: hidden;
+      @extend %transition;
+
+      .product-image {
+        height: 24rem;
+        overflow: hidden;
+        background-color: rgba($white, 0.02);
+        position: relative;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          @extend %transition;
+        }
+
+        .category-badge {
+          position: absolute;
+          top: 1.6rem;
+          left: 1.6rem;
+          background-color: rgba($theme-bg, 0.8);
+          backdrop-filter: blur(4px);
+          color: $primary;
+          padding: 0.6rem 1.2rem;
+          border-radius: 0.8rem;
+          font-size: 1.2rem;
+          font-weight: 700;
+          text-transform: uppercase;
+        }
+
+        .rating-badge {
+          position: absolute;
+          top: 1.6rem;
+          right: 1.6rem;
+          background-color: rgba($theme-bg, 0.8);
+          backdrop-filter: blur(4px);
+          color: $warning;
+          padding: 0.6rem 1rem;
+          border-radius: 0.8rem;
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-size: 1.3rem;
+          font-weight: 600;
+        }
+      }
+
+      .product-info {
+        padding: 2.4rem;
+
+        .name-price {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 1.2rem;
+          gap: 1rem;
+
+          h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: $theme-text;
+            line-height: 1.3;
+          }
+
+          .price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: $primary;
+          }
+        }
+
+        .description {
+          color: $theme-text-secondary;
+          font-size: 1.4rem;
+          line-height: 1.6;
+          margin-bottom: 2.4rem;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .product-actions {
+          display: grid;
+          // grid-template-columns: 1fr 1fr;
+          gap: 1.2rem;
+
+          .view-details-btn {
+            background-color: rgba($white, 0.05);
+            color: $theme-text;
+            height: 4.8rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            font-size: 1.4rem;
+            @extend %transition;
+          }
+
+          .add-to-cart-btn {
+            height: 4.8rem;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .marketplace-header {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .header-actions {
+        width: 100%;
+
+        .search-wrapper {
+          min-width: 100%;
+        }
+
+        .filter-group {
+          width: 100%;
+
+          .filter-select {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+}

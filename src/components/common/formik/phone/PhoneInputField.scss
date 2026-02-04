@@ -1,0 +1,159 @@
+@use '../../../../assets/theme/_var.scss' as *;
+
+.input_group {
+  &.phone {
+    .input_group {
+      &_inner {
+        .form {
+          &-control {
+            background-image: none;
+            border: .1rem solid rgba($black, 0.20);
+            background-color: $white;
+            font-size: 1.6rem;
+            width: 100%;
+            caret-color: $textblack;
+            height: 5.6rem;
+            color: $textblack;
+            border-radius: 1rem;
+            padding: 0.5rem 1.6rem 0.5rem 7rem;
+
+            @media (max-width:1439px) {
+              padding: 0.5rem 1.5rem 0.5rem 7rem;
+            }
+
+            &:-webkit-autofill::first-line,
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active {
+              -webkit-text-fill-color: $textblack;
+              overflow: clip;
+              transition: background-color 5000s ease-in-out 0s;
+              -webkit-backdrop-filter: blur(5.4rem);
+              --tw-shadow: 0 0 0px 1000px rgba(79, 121, 227, 0.00) inset !important;
+              -webkit-box-shadow: 0 0 0px 1000px rgba(79, 121, 227, 0.00) inset !important;
+              font-size: 1.6rem;
+              caret-color: $textblack;
+              border-color: rgba($black, .2);
+
+              @media (max-width:1439px) {
+                font-size: 1.4rem;
+              }
+            }
+
+            &::placeholder {
+              color: $greyText;
+              caret-color: $greyText;
+              opacity: 1;
+              font-size: 1.6rem;
+
+              @media (max-width:1439px) {
+                font-size: 1.4rem;
+              }
+            }
+
+            &:-moz-placeholder {
+              opacity: 1;
+              color: $greyText;
+              caret-color: $greyText;
+              font-size: 1.6rem;
+
+              @media (max-width:1439px) {
+                font-size: 1.4rem;
+              }
+            }
+
+            &::-webkit-input-placeholder {
+              opacity: 1;
+              color: $greyText;
+              caret-color: $greyText;
+              font-size: 1.6rem;
+
+              @media (max-width:1439px) {
+                font-size: 1.4rem;
+              }
+            }
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+
+            &[type=number] {
+              -moz-appearance: textfield;
+            }
+
+            &:focus {
+              border-color: $blueClr;
+              box-shadow: none;
+              background-color: transparent;
+              color: $textblack;
+            }
+
+            @media (max-width:1439px) {
+              font-size: 1.4rem;
+              height: 4.5rem;
+            }
+
+            &.is-invalid {
+              border-color: $red;
+              background-image: none;
+            }
+
+            &.disabled,
+            &:disabled {
+              background-color: transparent;
+              opacity: .4;
+              pointer-events: none;
+            }
+          }
+
+          &-label {
+            color: $white;
+            font-size: 1.4rem;
+            margin-bottom: .8rem;
+            font-weight: normal;
+            display: block;
+            font-weight: normal;
+
+            sup {
+              color: $red;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.react-tel-input {
+  .flag-dropdown {
+    background-color: transparent !important;
+    border: 0 !important;
+    border-top-left-radius: 1.6rem;
+    border-bottom-left-radius: 1.6rem;
+
+    >div {
+      width: 5rem;
+      padding-left: 2rem;
+      background-color: transparent !important;
+      border: 0 !important;
+
+      @media (max-width:1439px) {
+        padding-left: 1.5rem;
+      }
+    }
+
+    &::before {
+      content: '';
+      height: 3rem;
+      width: 0.1rem;
+      background-color: $borderclr;
+      position: absolute;
+      right: -0.5rem;
+      transform: translateY(-50%);
+      top: 50%;
+    }
+  }
+}

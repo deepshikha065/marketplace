@@ -1,0 +1,317 @@
+@use '../../../assets/theme/_var.scss' as *;
+
+.input_group {
+  & {
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+
+  .form {
+    &-control {
+      background-image: none;
+      border: .1rem solid $theme-border;
+      background: $theme-bg;
+      font-size: 1.6rem;
+      width: 100%;
+      height: 5.6rem;
+      color: $theme-text;
+      border-radius: 1rem;
+      padding: .5rem 2rem;
+      caret-color: $theme-text;
+
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-text-fill-color: $textblack;
+        overflow: clip;
+        transition: background-color 5000s ease-in-out 0s;
+        font-size: 1.6rem;
+        caret-color: $textblack;
+        border-color: rgba($black, .2);
+
+        @media (max-width:1439px) {
+          font-size: 1.4rem;
+        }
+      }
+
+      &::placeholder {
+        color: $greyText;
+        caret-color: $greyText;
+        opacity: 1;
+        font-size: 1.6rem;
+
+        @media (max-width:1439px) {
+          font-size: 1.4rem;
+        }
+      }
+
+      &:-moz-placeholder {
+        opacity: 1;
+        color: $greyText;
+        caret-color: $greyText;
+        font-size: 1.6rem;
+
+        @media (max-width:1439px) {
+          font-size: 1.4rem;
+        }
+      }
+
+      &::-webkit-input-placeholder {
+        opacity: 1;
+        color: $greyText;
+        caret-color: $greyText;
+        font-size: 1.6rem;
+
+        @media (max-width:1439px) {
+          font-size: 1.4rem;
+        }
+      }
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &[type=number] {
+        -moz-appearance: textfield;
+      }
+
+      &:focus {
+        box-shadow: none;
+        background: $theme-bg;
+        color: $theme-text;
+        border-color: $primary;
+      }
+
+      @media (max-width:1439px) {
+        font-size: 1.4rem;
+        height: 4.5rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+
+      &.is-invalid {
+        border-color: $red;
+        background-image: none;
+      }
+
+      &.disabled,
+      &:disabled {
+        background-color: $theme-bg;
+        opacity: .4;
+        pointer-events: none;
+      }
+    }
+
+    &-label {
+      color: $theme-text;
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+      display: block;
+      font-weight: normal;
+      line-height: 2.4rem;
+
+      @media (max-width: 767px) {
+        font-size: 1.4rem;
+      }
+
+      sup {
+        color: $red;
+      }
+
+      span {
+        color: $greyText;
+      }
+    }
+
+    &-check {
+      &-label {
+        color: $greyText;
+        font-size: 1.4rem;
+        font-weight: normal;
+
+        span {
+          color: $greyText;
+        }
+      }
+    }
+  }
+
+  &.checkbox_handle,
+  &.radio_handle {
+    margin-bottom: 1.5rem;
+  }
+
+  &.radio_handle {
+    margin-bottom: 1rem;
+
+    .radio_group_label {
+      color: $textblack;
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      font-weight: normal;
+      display: block;
+      font-weight: normal;
+      line-height: 2.4rem;
+
+      @media (max-width: 767px) {
+        font-size: 1.4rem;
+      }
+
+      sup {
+        color: $red;
+      }
+
+      span {
+        color: $greyText;
+      }
+    }
+
+    .form-check-input {
+      margin-top: -.1rem;
+    }
+
+    .form-check-label {
+      color: $textblack;
+      font-size: 1.6rem;
+      font-weight: normal;
+      padding-left: .5rem;
+    }
+
+    .form-check:last-of-type:not(:first-child) {
+      margin-top: 1rem;
+    }
+  }
+
+  textarea.form-control {
+    height: 10rem;
+    padding: 1.5rem 2rem;
+    border-radius: 1rem;
+
+    @media(max-width:1439px) {
+      padding: 1.5rem;
+    }
+  }
+
+  &_inner {
+    position: relative;
+
+    &.rightpadding {
+      .form-control {
+        padding-right: 7rem;
+
+        @media(max-width:575px) {
+          padding-right: 6rem;
+        }
+      }
+    }
+
+    &_righttext {
+      position: absolute;
+      right: 2rem;
+      display: flex;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $blueClr;
+      font-size: 1.4rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+
+  &_passbtn {
+    position: absolute;
+    right: 2rem;
+    transform: translateY(-50%);
+    top: 50%;
+    z-index: 1;
+  }
+
+  &_btm_title {
+    display: block;
+    padding-top: .5rem;
+    font-size: 1.4rem;
+    color: $greyText;
+    font-weight: 400;
+
+    strong {
+      font-weight: 500;
+      color: $textblack;
+    }
+  }
+
+  &_inner {
+    position: relative;
+  }
+
+  &_passbtn {
+    position: absolute;
+    right: 2rem;
+    transform: translateY(-50%);
+    top: 50%;
+    z-index: 1;
+  }
+
+  &_btm_title {
+    display: block;
+    padding-top: 0.5rem;
+    font-size: 1.4rem;
+
+    span,
+    a,
+    p {
+      font-size: 1.4rem;
+      font-weight: 400;
+    }
+  }
+
+  &.passfield {
+    .input_group {
+      &_inner {
+        .form {
+          &-control {
+            padding-right: 5rem;
+          }
+        }
+      }
+    }
+  }
+
+  .error_text {
+    color: $red;
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width:1439px) {
+    & {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.searchbar {
+  .form-control {
+    padding: 0.5rem 3rem 0.5rem 3.6rem;
+    height: 4.8rem;
+    font-size: 1.4rem;
+    background-color: $white;
+
+    &::placeholder {
+      font-size: 1.4rem;
+    }
+  }
+
+  .searchIcon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1.6rem;
+    display: inline-flex;
+    align-items: center;
+  }
+}

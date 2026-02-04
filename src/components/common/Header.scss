@@ -1,0 +1,171 @@
+@use "../../assets/theme/_var" as *;
+
+.main-header {
+  height: 7rem;
+  background-color: $theme-card-bg;
+  border-bottom: 1px solid $theme-border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    .icon-btn {
+      position: relative;
+      color: $theme-text-secondary;
+      @extend %transition;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      background-color: rgba($white, 0.05);
+
+      &:hover {
+        color: $primary;
+        background-color: rgba($primary, 0.1);
+      }
+
+      .badge {
+        position: absolute;
+        top: -0.2rem;
+        right: -0.2rem;
+        background-color: $danger;
+        color: $white;
+        font-size: 1rem;
+        font-weight: 700;
+        min-width: 1.8rem;
+        height: 1.8rem;
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid $theme-card-bg;
+      }
+
+      svg {
+        width: 2.2rem;
+        height: 2.2rem;
+      }
+    }
+  }
+
+  .profile-dropdown-container {
+    position: relative;
+
+    .profile-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 1rem);
+      right: 0;
+      width: 24rem;
+      background-color: $theme-card-bg;
+      border: 1px solid $theme-border;
+      border-radius: 1.2rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+      padding: 0.8rem;
+      animation: slideDown 0.2s ease-out;
+
+      .dropdown-header {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 1.2rem;
+
+        .user-avatar {
+          width: 4rem;
+          height: 4rem;
+          background: $btnGradient;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $white;
+          font-weight: 700;
+          font-size: 1.4rem;
+        }
+
+        .user-info {
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+
+          .user-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $theme-text;
+          }
+
+          .user-email {
+            font-size: 1.3rem;
+            color: $theme-text-secondary;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+
+      .dropdown-divider {
+        height: 1px;
+        background-color: $theme-border;
+        margin: 0.8rem 0;
+      }
+
+      .dropdown-item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 1rem 1.2rem;
+        border-radius: 0.8rem;
+        color: $theme-text-secondary;
+        font-weight: 500;
+        font-size: 1.45rem;
+        @extend %transition;
+
+        svg {
+          width: 1.8rem;
+          height: 1.8rem;
+        }
+
+        &:hover {
+          background-color: rgba($white, 0.05);
+          color: $theme-text;
+        }
+
+        &.logout {
+          color: rgba($danger, 0.8);
+
+          &:hover {
+            background-color: rgba($danger, 0.1);
+            color: $danger;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 1.5rem;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

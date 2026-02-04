@@ -1,0 +1,93 @@
+@use "../../assets/theme/_var" as *;
+
+.auth-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: $theme-bg;
+  color: $theme-text;
+
+  .auth-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 2;
+
+    .auth-card {
+      width: 100%;
+      max-width: 58rem;
+      padding: 3rem 4rem;
+      background-color: $theme-card-bg;
+      border-radius: 2.4rem;
+      border: 1px solid $theme-border;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+      .auth-logo {
+        margin-bottom: 3.2rem;
+        text-align: center;
+
+        h1 {
+          font-size: 3.2rem;
+          font-weight: 800;
+          color: $primary;
+        }
+      }
+    }
+  }
+
+  .auth-visual {
+    flex: 1.2;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 6rem;
+    background: linear-gradient(135deg, darken($primary, 20%) 0%, $primary 100%);
+    overflow: hidden;
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      right: -10%;
+      width: 60%;
+      height: 60%;
+      background: rgba($white, 0.1);
+      filter: blur(80px);
+      border-radius: 50%;
+    }
+
+    .visual-content {
+      position: relative;
+      z-index: 2;
+      max-width: 50rem;
+
+      h2 {
+        font-size: 4.8rem;
+        font-weight: 800;
+        margin-bottom: 2rem;
+        line-height: 1.1;
+        color: $white;
+      }
+
+      p {
+        font-size: 1.8rem;
+        color: rgba($white, 0.8);
+        line-height: 1.6;
+      }
+    }
+
+    .visual-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 70% 30%, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+    }
+  }
+}

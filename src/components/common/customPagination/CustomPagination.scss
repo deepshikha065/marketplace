@@ -1,0 +1,103 @@
+@use '../../../assets/theme/_var.scss' as *;
+
+.custompagination {
+    padding: 2rem 3rem;
+
+    &_left {
+        p {
+            color: $black0D040C;
+            font-size: 1.4rem;
+            margin: 0;
+        }
+    }
+
+    .pagination {
+        justify-content: flex-end;
+
+        .lineclr {
+            color: $primaryclr;
+        }
+
+        li {
+            &:not(:last-child) {
+                margin-right: 2rem;
+            }
+
+            .page-link {
+                border: 0.1rem solid $borderGrey;
+                border-radius: 0.8rem;
+                font-size: 1.4rem;
+                font-weight: normal;
+                line-height: normal;
+                letter-spacing: 0.6px;
+                color: $black;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 0.7rem 1rem;
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+
+            &.active {
+                .page-link {
+                    color: $white;
+                    background: linear-gradient(89.94deg, #2563EB 1.24%, #22C55E 99.95%);
+
+                }
+            }
+        }
+
+        li {
+
+            &.prevArrow,
+            &.nextArrow {
+                a {
+                    padding: 0.7rem 1rem;
+                }
+            }
+        }
+
+        li {
+            &.prevArrow {
+                margin-right: 2rem;
+            }
+
+            &.nextArrow {
+                margin-left: 0rem;
+            }
+        }
+
+        @media (max-width:1439px) {
+
+            margin-top: 1rem;
+
+            li {
+                .page-link {
+                    font-size: 1.6rem;
+                    color: $black;
+                }
+
+                &:not(:last-child) {
+                    margin-right: 1rem;
+
+                }
+            }
+        }
+    }
+
+    @media (max-width:991px) {
+
+        &_left {
+            text-align: center;
+        }
+
+        .pagination {
+            justify-content: center;
+        }
+
+    }
+}

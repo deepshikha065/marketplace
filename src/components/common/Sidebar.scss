@@ -1,0 +1,97 @@
+@use "../../assets/theme/_var" as *;
+
+.main-sidebar {
+  width: 28rem;
+  height: 100vh;
+  background-color: $theme-card-bg;
+  border-right: 1px solid $theme-border;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 101;
+  @extend %transition;
+
+  .sidebar-logo {
+    height: 7rem;
+    display: flex;
+    align-items: center;
+    padding: 0 3rem;
+    border-bottom: 1px solid $theme-border;
+
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: $primary;
+      letter-spacing: -0.02em;
+    }
+  }
+
+  .sidebar-nav {
+    padding: 2.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 1.2rem 1.6rem;
+      border-radius: 1.2rem;
+      color: $theme-text-secondary;
+      font-weight: 600;
+      font-size: 1.5rem;
+      @extend %transition;
+
+      svg {
+        width: 2rem;
+        height: 2rem;
+        color: inherit;
+      }
+
+      &:hover {
+        background-color: rgba($white, 0.05);
+        color: $theme-text;
+      }
+
+      &.active {
+        background-color: $primary;
+        color: $white;
+
+        svg {
+          color: $white;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1024px) {
+    width: 8rem;
+
+    .sidebar-logo {
+      justify-content: center;
+      padding: 0;
+
+      h2 {
+        display: none;
+      }
+    }
+
+    .sidebar-nav {
+      .nav-item {
+        justify-content: center;
+        padding: 1.2rem;
+
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: none; // You can implement a mobile bottom nav or hamburger menu later
+  }
+}

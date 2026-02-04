@@ -1,0 +1,174 @@
+@use '../../../../assets/theme/_var.scss' as *;
+
+.common_select {
+  >label {
+    color: $textblack;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    font-weight: normal;
+    display: block;
+    font-weight: normal;
+    line-height: 2.4rem;
+
+    sup {
+      color: $red;
+    }
+  }
+
+  .form__control {
+    background-image: none;
+    border: .1rem solid rgba($black, .2);
+    background: $white;
+    font-size: 1.6rem;
+    width: 100%;
+    caret-color: $textblack;
+    height: 5.6rem;
+    color: $textblack;
+    border-radius: 1rem;
+    padding: .5rem 1.6rem .5rem 1.6rem;
+    box-shadow: none;
+
+    .form__single-value,
+    .form__placeholder {
+      font-size: 1.6rem;
+      color: $greyText;
+      font-weight: normal;
+      white-space: nowrap;
+      text-align: left;
+      margin-left: 0;
+
+      .icon {
+        padding-right: .5rem;
+
+        img,
+        svg {
+          height: 2.4rem;
+          width: 2.4rem;
+          object-fit: contain;
+        }
+      }
+    }
+
+    .form__single-value {
+      color: $textblack;
+      text-align: left;
+      margin: 0;
+    }
+
+    &--menu-is-open {
+      border-color: $blueClr;
+      box-shadow: none;
+    }
+
+    .form__value-container,
+    .form__indicator {
+      padding: 0;
+    }
+
+    .form__input-container {
+      margin: 0;
+    }
+
+    &:hover {
+      border-color: rgba($black, .2);
+      box-shadow: none;
+    }
+
+    @media (max-width:1439px) {
+      height: 4.5rem;
+      font-size: 1.4rem;
+      padding: .3rem 1.5rem .5rem 1.5rem;
+    }
+  }
+
+  .form__menu {
+    box-shadow: 0px 0px 26px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    z-index: 2;
+
+    &-list {
+      width: 100%;
+      padding: 0;
+    }
+  }
+
+  .form__option {
+    font-size: 1.6rem;
+    width: 100%;
+    text-align: left;
+    padding: 1.2rem;
+    cursor: pointer;
+    font-weight: normal;
+    color: $greyText;
+    background-color: transparent;
+
+    span {
+      padding-right: .5rem;
+
+      img,
+      svg {
+        height: 2.4rem;
+        width: 2.4rem;
+        object-fit: contain;
+      }
+    }
+
+    &--is-selected {
+      background: transparent;
+      color: $black;
+      font-weight: 500;
+    }
+
+    &--is-focused,
+    &:active {
+      background-color: transparent;
+      box-shadow: none;
+    }
+
+    @media (max-width:1439px) {
+      font-size: 1.4rem;
+    }
+  }
+
+  &.small_select {
+    .form__control {
+      line-height: 1.1;
+      height: 4rem;
+      padding: .5rem 1.3rem;
+      font-size: 1.4rem;
+
+
+
+      .form__indicator {
+        padding: 0;
+
+        &s {
+          height: 2.5rem;
+
+        }
+      }
+
+      .form__single-value,
+      .form__placeholder {
+        font-size: 1.4rem;
+      }
+
+    }
+
+    .form__option {
+      font-size: 1.4rem;
+      padding: .6rem 1.2rem;
+
+      &:first-child {
+        padding-top: 1rem;
+      }
+
+      &:last-child {
+        padding-bottom: 1rem;
+      }
+    }
+  }
+}

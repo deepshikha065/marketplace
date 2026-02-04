@@ -1,0 +1,246 @@
+@use "./assets/theme/_var.scss" as *;
+
+* {
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: transparent !important;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent !important;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $scrollbarclr;
+    border-radius: 1rem;
+  }
+}
+
+html,
+body,
+#root,
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+#root,
+body,
+main {
+  flex: 1 auto;
+}
+
+html {
+  font-size: 62.5%;
+  min-height: 100%;
+
+  body {
+    font-size: 1.6rem;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
+    font-family: $basefont;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: $theme-text;
+    background-color: $theme-bg;
+    overflow-x: hidden;
+    transition: 0.3s background-color ease-in-out;
+    -ms-overflow-style: none;
+    font-weight: normal;
+    background: $theme-bg;
+
+    @media (max-width:1439px) {
+      font-size: 1.4rem;
+    }
+  }
+}
+
+#root {
+  overflow: hidden;
+}
+
+.App {
+  justify-content: space-between;
+
+  main {
+    margin-bottom: auto;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: $greyText;
+  /* @extend %transition; Placeholder not defined, using standard transition */
+  transition: all 0.3s ease-in-out;
+
+  &:hover:not([class]) {
+    color: $primaryclr;
+  }
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+
+  &:focus,
+  &:focus-within,
+  &:focus-visible,
+  &:active {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:disabled {
+    pointer-events: none;
+  }
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+.container {
+  padding: 0 1.5rem;
+  max-width: 167.1rem;
+
+  &-fluid {
+    padding: 0 1.5rem;
+  }
+
+  @media (max-width:1439px) {
+    max-width: 120rem;
+  }
+}
+
+.row {
+  margin: 0 -1.5rem;
+
+  >div {
+    padding: 0 1.5rem;
+  }
+}
+
+h1,
+.h1 {
+  font-size: 4.4rem;
+
+  @media (max-width:1439px) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: 1279px) {
+    font-size: 2.8rem;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 2.6rem;
+  }
+}
+
+h2,
+.h2 {
+  font-size: 4rem;
+
+  @media (max-width:1439px) {
+    font-size: 3.2rem;
+  }
+
+  @media (max-width: 1279px) {
+    font-size: 2.8rem;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 2.6rem;
+  }
+}
+
+h3,
+.h3 {
+  font-size: 3rem;
+
+  @media (max-width:1439px) {
+    font-size: 2.4rem;
+  }
+
+  @media (max-width: 1279px) {
+    font-size: 2rem;
+  }
+}
+
+h4,
+.h4 {
+  font-size: 2.4rem;
+  font-weight: 600;
+
+  @media (max-width:1439px) {
+    font-size: 2rem;
+  }
+
+  @media (max-width: 1279px) {
+    font-size: 1.8rem;
+  }
+}
+
+h5 {
+  font-size: 2rem;
+
+  @media (max-width:1439px) {
+    font-size: 1.8rem;
+  }
+
+  @media (max-width: 1279px) {
+    font-size: 1.6rem;
+  }
+}
+
+h6 {
+  font-size: 1.8rem;
+
+  @media (max-width:1439px) {
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: 1279px) {
+    font-size: 1.4rem;
+  }
+}
+
+input {
+
+  &[type="number"]::-webkit-inner-spin-button,
+  &[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+}

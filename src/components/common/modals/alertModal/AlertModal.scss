@@ -1,0 +1,135 @@
+@use "../../../assets/theme/_var.scss" as *;
+
+.alertmodal {
+    &.modal {
+        .modal {
+            &-dialog {
+                text-align: center;
+                max-width: 60rem;
+
+                img,
+                svg {
+                    margin-bottom: 2.8rem;
+
+                    @media (max-width:575px) {
+                        margin-bottom: 1rem;
+                    }
+                }
+
+                .alertmodal_info {
+                    svg {
+                        margin-bottom: 0;
+                    }
+                }
+
+                p {
+                    margin-top: 1rem;
+                    max-width: 47.7rem;
+                    margin-inline: auto;
+
+                    @media (max-width:575px) {
+                        margin-top: 1rem;
+                    }
+                }
+
+                .form-control {
+                    padding: 2rem;
+                    font-size: 1.4rem;
+                    font-weight: 400;
+                    border: 0.1rem solid $borderclr;
+                    border-radius: 1.6rem;
+                    height: 8rem;
+                    resize: none;
+                    margin-top: 3rem;
+
+                    &:focus {
+                        box-shadow: none;
+                    }
+                }
+
+                .common_btn {
+                    margin-top: 4rem;
+
+                    @media (max-width:575px) {
+                        margin-top: 2rem;
+                    }
+                }
+
+                h4 {
+                    font-size: 2.2rem;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        &.logout_modal {
+            h3 {
+                max-width: 30rem;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    }
+
+    &.plan_modal {
+        .modal {
+            &-body {
+                >svg {
+                    height: 10rem;
+                    width: 10rem;
+                }
+            }
+        }
+    }
+
+    &_info {
+        background-color: $borderclr2;
+        display: flex;
+        align-items: center;
+        padding: 2rem 1.3rem;
+        border-radius: 1rem;
+        border: .1rem solid #BFDBFE;
+        color: $blueClr;
+        margin-top: 2rem;
+
+        @media (max-width:991px) {
+            padding: 1rem 0.5rem;
+            display: block;
+        }
+
+        &_icon {
+            flex-shrink: 0;
+        }
+
+        span {
+            margin-right: 1rem;
+
+            @media (max-width:767px) {
+                font-size: 1.4rem;
+            }
+
+            svg {
+                height: 2.4rem;
+                width: 2.4rem;
+            }
+        }
+    }
+
+    &_reminder {
+        .text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            padding: 2rem;
+            text-align: center;
+            background-color: $tableborderclr;
+            border-radius: 1rem;
+            margin-block: 2rem;
+        }
+
+        span {
+            color: $black;
+            font-weight: 500;
+            font-size: 1.4rem;
+        }
+    }
+}

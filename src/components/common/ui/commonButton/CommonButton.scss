@@ -1,0 +1,293 @@
+@use "../../../../assets/theme/var" as *;
+
+.common_btn {
+  & {
+    height: 5.6rem;
+    border-radius: 1rem;
+    background: $btnGradient;
+    color: $white;
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 1rem 4rem;
+    border: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.1;
+    position: relative;
+    outline: none;
+    overflow: hidden;
+    transition: 0.4s all ease-in-out;
+
+
+    &:hover {
+      background: $btnGradientHover;
+      transition: 0.4s all ease-in-out;
+    }
+  }
+
+  .title {
+    @extend %transition;
+  }
+
+  &.transparent {
+    background: transparent;
+    border: none;
+    color: $greyText;
+    padding: 0;
+  }
+
+  &_icon {
+    margin-right: 0.8rem;
+
+    svg,
+    img {
+      max-width: 2.6rem;
+      height: auto;
+
+      @media (max-width: 991px) {
+        width: 2rem;
+      }
+    }
+  }
+
+  &.back_btn {
+    color: $textblack;
+
+    .common_btn_icon {
+      // transform: rotate(180deg);
+      margin-left: 0;
+      margin-right: 0.8rem;
+    }
+  }
+
+  &.full {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  &.secondarybtn {
+    font-weight: 500;
+    background: transparent;
+    border: .1rem solid $textblack;
+    color: $textblack;
+
+    svg {
+      * {
+        @extend %transition;
+      }
+    }
+
+    &:hover {
+      background-color: $textblack;
+      color: $white;
+
+      svg {
+        path {
+          fill: $white;
+        }
+      }
+    }
+  }
+
+  &.red_btn {
+    background: $red;
+    color: $white;
+
+    &.transparent {
+      background: transparent;
+      border: .1rem solid $red;
+      color: $red;
+
+      &:hover {
+        background-color: $red;
+        color: $white;
+      }
+    }
+  }
+
+  &.lightblueClr {
+    background: rgba($blueClr, 0.1);
+    color: $blueClr;
+    font-weight: 600;
+
+    &:hover {
+      background: rgba($blueClr, 0.2);
+    }
+  }
+
+  &.green_btn {
+    background: rgba($greenclr2, $alpha: 0.1);
+    color: $greenclr2;
+    font-weight: 700;
+  }
+
+  &.green {
+    background: $greenclr2;
+    color: $white;
+    font-weight: 600;
+  }
+
+  &.green_border {
+    background: transparent;
+    color: $greenclr2;
+    border: 0.1rem solid $greenclr2;
+
+    &:hover {
+      background-color: $greenclr2;
+      color: $white;
+    }
+  }
+
+  &.red {
+    background: $red;
+    color: $white;
+    font-weight: 600;
+
+  }
+
+  &.red_border {
+    background: transparent;
+    color: $red;
+    border: 0.1rem solid $red;
+
+    &:hover {
+      background-color: $red;
+      color: $white;
+    }
+  }
+
+  &.grey_border {
+    background: transparent;
+    color: $greyText;
+    border: 0.1rem solid $greyText;
+
+    &:hover {
+      background-color: $greyText;
+      color: $white;
+    }
+  }
+
+  &.small_btn {
+    font-weight: 500;
+    height: 4rem;
+    min-width: 5rem;
+    padding: 1rem 2.1rem;
+  }
+
+  &:disabled {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &.border_btn {
+    background: transparent;
+    border: .1rem solid $blueClr;
+    color: $blueClr;
+
+    &:hover {
+      background-color: $blueClr;
+      color: $white;
+    }
+  }
+
+  &.btn_white {
+    background: none;
+    background-color: $white;
+    color: $textblack;
+  }
+
+  &.btn_white_border {
+    background: transparent;
+    border: .1rem solid $white;
+    color: $white;
+
+    &:hover {
+      background-color: $white;
+      color: $textblack;
+    }
+  }
+
+  &.green_btn_clr {
+    background: $green4A;
+    color: $white;
+    font-weight: 600;
+  }
+
+  &.blue_btn_clr {
+    background: $blueClr;
+    color: $white;
+    font-weight: 600;
+
+    &:hover {
+      background: rgba($blueClr, 0.8);
+
+    }
+  }
+
+  &.purple_btn_clr {
+    background: $purpleClr;
+    color: $white;
+    font-weight: 600;
+
+    &:hover {
+      background-color: rgba($purpleClr, 0.8);
+    }
+  }
+
+  &.orange_btn_clr {
+    background: $orangeClrEA580C;
+    color: $white;
+    font-weight: 600;
+  }
+
+  &.yellow_btn {
+    color: $yellowClr3;
+    border: 1px solid $yellowClr3;
+    background: transparent;
+
+    &:hover {
+      background-color: $yellowClr3;
+      color: $white;
+    }
+  }
+
+  &.spinner_loader {
+    .title {
+      opacity: 0;
+    }
+
+    .spin_handle {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+    }
+  }
+
+  &.grey_btn {
+    background: $tableborderclr;
+    color: $textblack;
+  }
+
+  &.primary_btn {
+    background: $primaryBlue;
+    color: $white;
+  }
+
+  &.lightblue_btn {
+    background: $lightblueClr;
+    color: $blue1D4ED8;
+  }
+
+  @media (max-width:1439px) {
+    height: 4.5rem;
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 991px) {
+    padding: 1rem 1.5rem;
+  }
+}

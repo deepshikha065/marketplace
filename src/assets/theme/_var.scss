@@ -1,0 +1,65 @@
+// Color Variables
+$primary: #6366f1;
+$secondary: #94a3b8;
+$success: #22c55e;
+$info: #0ea5e9;
+$warning: #f59e0b;
+$danger: #ef4444;
+$light: #1e293b;
+$dark: #0f172a;
+
+// Custom Theme Colors
+$theme-primary: $primary;
+$theme-bg: #030712;
+$theme-card-bg: #111827;
+$theme-text: #f8fafc;
+$theme-text-secondary: #94a3b8;
+$theme-border: #334155;
+
+// App Specific Colors
+$scrollbarclr: #334155;
+$basefont: 'Inter', sans-serif;
+$textblack: #f8fafc;
+$baseClr: #030712;
+$greyText: #94a3b8;
+$primaryclr: $primary;
+$black0D040C: #000;
+
+// Missing variables found in CommonTable.scss, CustomPagination.scss, and CommonButton.scss
+$white: #ffffff;
+$borderclr3: #334155;
+$whiteEFF1F4: #1e293b;
+$greenclr2: #10b981;
+$blueclr1E40AF: #1e40af;
+$red: #ef4444;
+$brown854D0E: #854d0e;
+$blueClr: #3b82f6;
+$purpleClr: #8b5cf6;
+$yellowClr3: #eab308;
+$redFEE2E2: #450a0a;
+$yellowFFEDD5: #451a03;
+$brown9A3412: #9a3412;
+$tableborderclr: #1e293b;
+$lightblueClr: #1e3a8a;
+$purpleF3E8FF: #2e1065;
+$grey6B7280: #6b7280;
+
+// Pagination
+$borderGrey: #334155;
+$black: #000000;
+
+// Buttons
+$btnGradient: linear-gradient(90deg, #6366f1 0%, #4f46e5 100%);
+$btnGradientHover: linear-gradient(90deg, #4f46e5 0%, #4338ca 100%);
+$green4A: #4ade80;
+$orangeClrEA580C: #ea580c;
+$primaryBlue: #3b82f6;
+$blue1D4ED8: #1d4ed8;
+
+// Placeholders
+%transition {
+  transition: all 0.3s ease-in-out;
+}
+
+$borderclr: #334155;
+$borderclr2: #1e293b;
