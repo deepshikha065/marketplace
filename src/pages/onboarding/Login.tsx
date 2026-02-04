@@ -7,6 +7,11 @@ import CommonButton from '../../components/common/ui/commonButton/CommonButton';
 
 import './Auth.scss';
 
+interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
 const Login: React.FC = () => {
 
   const initialValues = {
@@ -19,7 +24,7 @@ const Login: React.FC = () => {
     password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
   });
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: LoginFormValues) => {
     console.log('Login values:', values);
   };
 

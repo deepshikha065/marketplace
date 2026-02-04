@@ -6,7 +6,6 @@ import {
   PaginationPrevIcon,
 } from "../../../assets/images/icons/SvgIcons";
 import "./CustomPagination.scss";
-import { TABLE_LIMIT } from "../../../utils/ApiUtils";
 
 interface CustomPaginationProps {
   limit?: number;
@@ -18,7 +17,7 @@ interface CustomPaginationProps {
 }
 
 const CustomPagination: React.FC<CustomPaginationProps> = ({
-  limit = TABLE_LIMIT,
+  limit = 10,
   className,
   handlePageChange,
   pageCount,
@@ -27,9 +26,9 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const onPageChanged = (event: any) => {
+  const onPageChanged = (event: { selected: number }) => {
     setCurrentPage(event?.selected + 1);
-    handlePageChange && handlePageChange(event);
+    handlePageChange?.(event);
   };
   return (
     <div className={`custompagination ${className}`}>

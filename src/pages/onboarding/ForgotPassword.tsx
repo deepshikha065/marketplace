@@ -8,6 +8,10 @@ import { ArrowLeftIcon } from '../../assets/icons/svg';
 import './ForgotPassword.scss';
 import { ROUTES } from '../../constants/routes';
 
+interface ForgotPasswordFormValues {
+  email: string;
+}
+
 const ForgotPassword: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
 
@@ -19,7 +23,7 @@ const ForgotPassword: React.FC = () => {
     email: Yup.string().email('Invalid email address').required('Email is required'),
   });
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: ForgotPasswordFormValues) => {
     console.log('Forgot password values:', values);
     setSubmitted(true);
   };

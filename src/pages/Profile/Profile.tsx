@@ -8,6 +8,14 @@ import FormControl from '../../components/common/formik/FormControl';
 import CommonButton from '../../components/common/ui/commonButton/CommonButton';
 import { ROUTES } from '../../constants/routes';
 
+
+interface ProfileFormValues {
+  fullName: string;
+  email: string;
+  phone: string;
+  location: string;
+}
+
 const Profile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -24,7 +32,7 @@ const Profile: React.FC = () => {
     phone: Yup.string().required('Phone number is required'),
   });
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: ProfileFormValues) => {
     console.log('Profile updated:', values);
     setIsEditing(false);
   };

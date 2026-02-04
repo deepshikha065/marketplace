@@ -79,7 +79,7 @@ const CreateAccountForm = () => {
               name="role"
               options={roleOptions}
               value={formik.values.role}
-              onChange={(value: any) => formik.setFieldValue("role", value)}
+              onChange={(value) => formik.setFieldValue("role", value)}
               error={
                 formik.touched.role && formik.errors.role
                   ? (formik.errors.role as string)
@@ -92,7 +92,7 @@ const CreateAccountForm = () => {
               label="Date of Birth"
               name="dob"
               defaultValue={formik.values.dob}
-              onChange={(value: any) => formik.setFieldValue("dob", value)}
+              onChange={(value) => formik.setFieldValue("dob", value)}
               error={
                 formik.touched.dob && formik.errors.dob
                   ? (formik.errors.dob as string)

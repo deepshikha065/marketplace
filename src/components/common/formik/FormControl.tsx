@@ -1,5 +1,4 @@
 import DatePickerr from "./datepickerr/DatePickerr";
-import DateTimePickerr from "./datepickerr/DateTimePickerr";
 import InputField from "./inputField/InputField";
 import SelectField from "./selectField/SelectField";
 import TextareaField from "./textareaField/TextareaField";
@@ -21,8 +20,6 @@ const FormControl: React.FC<FormControlProps> = ({ control, error, ...props }) =
       return <SelectField {...props} error={error} />;
     case "date":
       return <DatePickerr {...props} error={error} />;
-    case "datetime":
-      return <DateTimePickerr {...props} error={error} />;
     case "textarea":
       return <TextareaField {...props} error={error} />;
     case "phone-input":

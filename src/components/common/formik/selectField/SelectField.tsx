@@ -2,6 +2,7 @@ import { useState } from "react";
 import Select, { components } from "react-select";
 import type { GroupBase, OptionProps, SingleValueProps } from "react-select";
 import ErrorComponent from "../errorComponent/ErrorComponent";
+import type { CSSObjectWithLabel } from "react-select";
 import "../FormControl.scss";
 import "./SelectField.scss";
 import type { ReactNode } from "react";
@@ -22,7 +23,7 @@ interface SelectFieldProps {
   className?: string;
   menuIsOpen?: boolean;
   isClearable?: boolean;
-  onChange?: (e: any) => void;
+  onChange?: (value: string | undefined) => void;
 }
 
 const CustomOption = (props: OptionProps<Option, false, GroupBase<Option>>) => {
@@ -87,7 +88,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
           SingleValue: CustomSingleValue,
         }}
         styles={{
-          indicatorSeparator: (base: any) => ({
+          indicatorSeparator: (base: CSSObjectWithLabel) => ({
             ...base,
             display: "none",
           }),

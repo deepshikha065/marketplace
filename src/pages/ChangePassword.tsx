@@ -7,6 +7,11 @@ import CommonButton from '../components/common/ui/commonButton/CommonButton';
 import { ArrowLeftIcon } from '../assets/icons/svg';
 import { ROUTES } from '../constants/routes';
 import './ChangePassword.scss';
+interface ChangePasswordFormValues {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 
 const ChangePassword: React.FC = () => {
   const navigate = useNavigate();
@@ -25,7 +30,7 @@ const ChangePassword: React.FC = () => {
       .required('Confirm password is required'),
   });
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: ChangePasswordFormValues) => {
     console.log('Password changed:', values);
     navigate(ROUTES.PROFILE);
   };

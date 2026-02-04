@@ -7,6 +7,13 @@ import CommonButton from '../../components/common/ui/commonButton/CommonButton';
 import './Auth.scss';
 import { ROUTES } from '../../constants/routes';
 
+interface FormValues {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 const Signup: React.FC = () => {
 
   const initialValues = {
@@ -25,7 +32,7 @@ const Signup: React.FC = () => {
       .required('Confirm password is required'),
   });
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: FormValues) => {
     console.log('Signup values:', values);
   };
 

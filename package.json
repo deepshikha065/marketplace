@@ -1,5 +1,5 @@
 {
-  "name": "boiler",
+  "name": "marketplace",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky install",
+    "release:patch": "npm version patch",
+    "release:minor": "npm version minor",
+    "release:major": "npm version major"
   },
   "dependencies": {
     "@ebay/nice-modal-react": "^1.2.13",
@@ -40,6 +44,7 @@
     "globals": "^16.5.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "husky": "^8.0.0"
   }
 }
