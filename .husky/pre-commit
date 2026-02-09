@@ -1,4 +1,11 @@
+# #!/usr/bin/env sh
+# . "$(dirname -- "$0")/_/husky.sh"
+
+# npm run lint
+
+
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+cd frontend || exit 1
 npm run lint
