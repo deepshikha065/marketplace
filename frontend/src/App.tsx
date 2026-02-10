@@ -15,6 +15,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './redux/app/store';
 import Profile from './pages/Profile/Profile';
 import Cart from './pages/Cart/Cart';
+import ProductsInfo from './pages/ProductsInfo/ProductsInfo';
 import { PrivateGuard, PublicGuard } from './AuthGuard';
 
 
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
       { path: ROUTES.CHANGE_PASSWORD, element: <ChangePassword /> },
       { path: ROUTES.PRODUCT_DETAILS, element: <ProductDetails /> },
       { path: ROUTES.CART, element: <Cart /> },
+      { path: ROUTES.PRODUCTS_INFO, element: <ProductsInfo /> },
     ],
   },
 ]);

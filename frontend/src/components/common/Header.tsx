@@ -3,11 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { ProfileIcon, CartIcon, LogoutIcon } from '../../assets/icons/svg';
 import { ROUTES } from '../../constants/routes';
 import './Header.scss';
+import { useAppSelector, useAppDispatch } from '../../redux/app/hooks';
+import { logOutUser } from '../../features/user/userSlice';
+import api from '../../service/getService';
 
 const Header: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  const { user } = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -19,12 +25,19 @@ const Header: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    // Implement logout logic here
-    localStorage.removeItem('token');
-    navigate(ROUTES.LOGIN);
+  const handleLogout = async () => {
+    try {
+      await api.post('/api/auth/logout');
+      dispatch(logOutUser());
+      localStorage.removeItem('persist:root'); // Clear persisted state
+      alert('Logout successfully');
+      navigate(ROUTES.LOGIN);
+    } catch (error) {
+      console.log(error);
+      dispatch(logOutUser()); // Still logout on error if API fails
+      navigate(ROUTES.LOGIN);
+    }
   };
-
 
   return (
     <header className="main-header">
@@ -46,10 +59,10 @@ const Header: React.FC = () => {
           {isDropdownOpen && (
             <div className="profile-dropdown-menu">
               <div className="dropdown-header">
-                <div className="user-avatar">JD</div>
+                <div className="user-avatar">AU</div>
                 <div className="user-info">
-                  <span className="user-name">John Doe</span>
-                  <span className="user-email">john@example.com</span>
+                  <span className="user-name">{user.user.name}</span>
+                  <span className="user-email">{user.user.email}</span>
                 </div>
               </div>
               <div className="dropdown-divider"></div>

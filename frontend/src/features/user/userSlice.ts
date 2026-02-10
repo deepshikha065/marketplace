@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import type { PayloadAction } from "@reduxjs/toolkit";
-import { adminLoginApi, resigterUserApi } from "../../service/getService";
+import { adminLoginApi, registerUserApi } from "../../service/getService";
 
 interface UserState {
   user?: any | null;
@@ -46,7 +45,7 @@ export const resigterUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const res = await resigterUserApi(data);
+      const res = await registerUserApi(data);
       return res;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Sign up failed");

@@ -7,11 +7,32 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 });
-interface LoginPayload {
+
+api.interceptors.request.use(
+  (config) => {
+    const persistRoot = localStorage.getItem("persist:root");
+
+    if (persistRoot) {
+      const root = JSON.parse(persistRoot);
+
+      if (root.user) {
+        const user = JSON.parse(root.user);
+        if (user?.token) {
+          config.headers.Authorization = `Bearer ${user.token}`;
+        }
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export interface LoginPayload {
   email: string;
   password: string;
 }
-interface SignupPayload {
+
+export interface SignupPayload {
   name: string;
   email: string;
   password: string;
@@ -19,23 +40,64 @@ interface SignupPayload {
 }
 
 export const adminLoginApi = async (data: LoginPayload) => {
-  const response = await api.post("/api/v1/admin/login", data);
-  return response.data;
+  // const res = await api.post("/api/v1/admin/login", data);
+  const res = await api.post("/api/auth/login", data);
+
+  return res.data;
 };
 
-export const resigterUserApi = async (data: SignupPayload) => {
-  const response = await api.post("/api/auth/signup", data);
-  return response.data;
+export const registerUserApi = async (data: SignupPayload) => {
+  const res = await api.post("/api/auth/signup", data);
+  return res.data;
 };
 
 export const getProductsApi = async () => {
-  const response = await api.get("/api/v1/products");
-  return response.data;
+  const res = await api.get("/api/v1/products");
+  return res.data;
 };
 
 export const getProductByIdApi = async (id: string) => {
-  const response = await api.get(`/api/v1/products/${id}`);
-  return response.data;
+  const res = await api.get(`/api/v1/products/${id}`);
+  return res.data;
+};
+
+export const addProductApi = async (data: {
+  productId: string;
+  quantity: number;
+}) => {
+  const res = await api.post("/api/v1/cart/items", data);
+  return res.data;
+};
+
+export const getProductCartApi = async () => {
+  const res = await api.get("/api/v1/cart");
+  return res.data;
+};
+
+export const updateCartItemApi = async (itemId: string, quantity: number) => {
+  const res = await api.patch(`/api/v1/cart/items/${itemId}`, { quantity });
+  return res.data;
+};
+
+export const removeCartItemApi = async (itemId: string) => {
+  const res = await api.delete(`/api/v1/cart/items/${itemId}`);
+  return res.data;
+};
+
+// Admin Product APIs
+export const createProductApi = async (productData: any) => {
+  const res = await api.post("/api/v1/admin/products", productData);
+  return res.data;
+};
+
+export const updateProductApi = async (id: string, productData: any) => {
+  const res = await api.put(`/api/v1/admin/products/${id}`, productData);
+  return res.data;
+};
+
+export const deleteProductApi = async (id: string) => {
+  const res = await api.delete(`/api/v1/admin/products/${id}`);
+  return res.data;
 };
 
 export default api;

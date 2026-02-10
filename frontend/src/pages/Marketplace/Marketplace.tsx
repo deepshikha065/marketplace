@@ -4,19 +4,12 @@ import { FilterIcon, StarIcon, CartIcon } from '../../assets/icons/svg';
 import CommonButton from '../../components/common/ui/commonButton/CommonButton';
 import FormControl from '../../components/common/formik/FormControl';
 import { ROUTES } from '../../constants/routes';
-import { getProducts } from '../../features/products/productSlice';
-import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import './Marketplace.scss';
+import api from '../../service/getService';
+import AddToCartBtn from '../../components/common/addToCartBtn/AddToCartBtn';
 
 const Marketplace: React.FC = () => {
   const navigate = useNavigate();
-
-  const dispatch = useAppDispatch();
-  const selector = useAppSelector((state) => state.product.products);
-  const openDetails = (productId: string) => {
-    navigate(ROUTES.PRODUCT_DETAILS.replace(':id', productId.toString()));
-  };
-
   const categoryOptions = [
     { value: 'all', label: 'All Categories' },
     { value: 'audio', label: 'Audio' },
@@ -32,10 +25,23 @@ const Marketplace: React.FC = () => {
     { value: 'rating', label: 'Top Rated' },
   ];
 
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+  const [products, setProducts] = React.useState([]);
 
+  const productDetails = async () => {
+    const response = await api.get('/api/v1/products');
+    const data = response.data.products;
+    setProducts(data);
+  }
+
+  useEffect(() => {
+    productDetails();
+  }, []);
+
+
+  const openDetails = async (productId: string | number) => {
+    console.log("Product ID:", productId);
+    navigate(ROUTES.PRODUCT_DETAILS.replace(':id', productId.toString()));
+  };
   return (
     <div className="marketplace-page">
       <div className="marketplace-header">
@@ -76,7 +82,7 @@ const Marketplace: React.FC = () => {
       <div>
       </div>
       <div className="products-grid">
-        {selector.map((product: any) => (
+        {products.map((product: any) => (
           <div className="product-card" key={product.id}>
             <div className="product-image">
               <img src={product.image} alt={product.name} />
@@ -96,14 +102,11 @@ const Marketplace: React.FC = () => {
                 <button
                   className="view-details-btn"
                   onClick={() => openDetails(product.id)}
+                // id=''
                 >
                   View Details
                 </button>
-                <CommonButton
-                  title="Add to Cart"
-                  svgIcon={<CartIcon />}
-                  className="add-to-cart-btn"
-                />
+                <AddToCartBtn productId={product.id} />
               </div>
             </div>
           </div>

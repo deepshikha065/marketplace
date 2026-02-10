@@ -1,0 +1,120 @@
+@use "../../../../assets/theme/_var.scss" as *;
+
+.product-modal {
+  .modal-dialog {
+    max-width: 600px;
+  }
+
+  .modal-content {
+    background-color: $theme-card-bg;
+    border-radius: 24px;
+    padding: 1.5rem;
+    border: 1px solid $theme-border;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-header {
+    border-bottom: 1px solid $theme-border;
+    padding-bottom: 1.5rem;
+
+    .modal-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: $theme-text;
+    }
+
+    .btn-close {
+      filter: invert(1); // To make the close button white
+    }
+  }
+
+  .modal-body {
+    padding-top: 2rem;
+  }
+
+  .product-form {
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+
+      .full-width {
+        grid-column: span 2;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        label {
+          font-size: 1.4rem;
+          font-weight: 600;
+          color: $theme-text;
+        }
+
+        .input_field,
+        .select_field,
+        .textarea_field {
+
+          input,
+          select,
+          textarea {
+            background-color: rgba($theme-bg, 0.5);
+            border-radius: 12px;
+            border: 1px solid $theme-border;
+            padding: 1rem 1.2rem;
+            width: 100%;
+            color: $theme-text;
+            font-size: 1.4rem;
+            transition: all 0.2s ease;
+
+            &::placeholder {
+              color: rgba($theme-text-secondary, 0.5);
+            }
+
+            &:focus {
+              border-color: $primary;
+              box-shadow: 0 0 0 4px rgba($primary, 0.1);
+              outline: none;
+              background-color: rgba($theme-bg, 0.8);
+            }
+          }
+
+          select {
+            option {
+              background-color: $theme-card-bg;
+              color: $theme-text;
+            }
+          }
+        }
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid $theme-border;
+
+      button {
+        padding: 1rem 2rem;
+        font-weight: 600;
+        border-radius: 12px;
+        font-size: 1.4rem;
+      }
+
+      .secondarybtn {
+        background: rgba($theme-text, 0.05);
+        border: 1px solid $theme-border;
+        color: $theme-text;
+
+        &:hover {
+          background: rgba($theme-text, 0.1);
+        }
+      }
+    }
+  }
+}

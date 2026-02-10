@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import FormControl from '../../components/common/formik/FormControl';
 import CommonButton from '../../components/common/ui/commonButton/CommonButton';
-import { useAppDispatch } from '../../redux/app/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import { adminLogin } from '../../features/user/userSlice';
 import { ROUTES } from '../../constants/routes';
 import './Auth.scss';
@@ -16,7 +16,8 @@ interface LoginFormValues {
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
-  // const { error } = useAppSelector(state => state.user);
+  // const { user } = useAppSelector(state => state.user);
+  // console.log("user", user.user.name);
   const navigate = useNavigate();
 
   const formik = useFormik<LoginFormValues>({
@@ -35,6 +36,8 @@ const Login: React.FC = () => {
     onSubmit: async (values) => {
       console.log('Login values:', values);
       const result = await dispatch(adminLogin(values));
+      console.log("result", result);
+
       navigate(ROUTES.DASHBOARD);
       if (adminLogin.fulfilled.match(result)) {
       }

@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import FormControl from '../../components/common/formik/FormControl';
 import CommonButton from '../../components/common/ui/commonButton/CommonButton';
 import { ROUTES } from '../../constants/routes';
-import './Auth.scss';
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import { resigterUser } from '../../features/user/userSlice';
+import './Auth.scss';
 
 interface FormValues {
   name: string;
@@ -41,27 +41,8 @@ const Signup: React.FC = () => {
         .oneOf([Yup.ref('password')], 'Passwords must match')
         .required('Confirm password is required'),
     }),
-    // onSubmit: (values) => {
-    //   dispatch(
-    //     registerUser({
-    //       name: values.name,
-    //       email: values.email,
-    //       password: values.password,
-    //       confirmPassword: values.confirmPassword,
-    //     })
-    //   );
-    //   // if (registerUser.fulfilled.match(result)) {
-    //   //   alert('Registration successful');
-    //   //   console.log(result);
-    //   // }
-    //   // if (registerUser.rejected.match(result)) {
-    //   //   console.error(result.payload as string);
-    //   // }
-    //   console.log('Signup values:', values);
-    // },
     onSubmit: async (values) => {
       console.log("SUBMIT START");
-
       const result = await dispatch(
         resigterUser({
           name: values.name,
@@ -70,10 +51,8 @@ const Signup: React.FC = () => {
           confirmPassword: values.confirmPassword,
         })
       );
-
       console.log("THUNK RESULT 👉", result);
     }
-
   });
 
   const { handleSubmit, errors, touched } = formik;
@@ -100,7 +79,6 @@ const Signup: React.FC = () => {
             onBlur={formik.handleBlur}
           />
         </div>
-
         <div className="form-group">
           <FormControl
             control="input"
@@ -114,7 +92,6 @@ const Signup: React.FC = () => {
             onBlur={formik.handleBlur}
           />
         </div>
-
         <div>
           <div className="form-group password-group">
             <FormControl
@@ -145,21 +122,18 @@ const Signup: React.FC = () => {
                   ? errors.confirmPassword
                   : ''
               }
-
               value={formik.values.confirmPassword}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
           </div>
         </div>
-
         <CommonButton
           title="Create Account"
           type="submit"
           fluid
           className="submit-btn"
         />
-
         <div className="auth-footer">
           Already have an account?{' '}
           <Link to={ROUTES.LOGIN}>Sign In</Link>

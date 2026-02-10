@@ -8,4 +8,5 @@ export const ROUTES = {
   CHANGE_PASSWORD: "/change-password",
   PRODUCT_DETAILS: "/product/:id",
   CART: "/cart",
+  PRODUCTS_INFO: "/products-info",
 };

@@ -26,7 +26,6 @@ const CreateAccountForm = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log("Form Values:", values);
       alert(JSON.stringify(values, null, 2));
     },
   });

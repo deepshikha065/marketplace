@@ -1,53 +1,21 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import CommonButton from '../components/common/ui/commonButton/CommonButton';
-import { ArrowLeftIcon, StarIcon, CartIcon } from '../assets/icons/svg';
-import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from '../redux/app/hooks';
-import { getProductById } from '../features/products/productSlice';
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeftIcon, StarIcon } from '../assets/icons/svg';
 import './ProductDetails.scss';
+import api from '../service/getService';
+import AddToCartBtn from '../components/common/addToCartBtn/AddToCartBtn';
 
 const ProductDetails: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { selectedProduct: product, isLoading, error } = useAppSelector(state => state.product);
-
   const { id } = useParams();
+  const [productData, setProductData] = React.useState<any>(null);
 
-  useEffect(() => {
-    if (id) {
-      dispatch(getProductById({ id }));
-    }
-  }, [id, dispatch]);
-
-  if (isLoading) {
-    return (
-      <div className="product-details-page">
-        <div className="loading-spinner">Loading...</div>
-      </div>
-    );
+  const productDetails = async ({ productId }: { productId: any }) => {
+    const response = await api.get(`/api/v1/products/${productId}`);
+    const data = response.data;
+    setProductData(data);
   }
-
-  if (error || !product) {
-    return (
-      <div className="product-details-page">
-        <div className="product-details-error">
-          <h2>{error || "Product not found"}</h2>
-          <button onClick={() => navigate('/marketplace')}>Back to Marketplace</button>
-        </div>
-      </div>
-    );
-  }
-
-  const productImage = product.image || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop";
-  const productRating = product.rating || 4.5;
-  const productCategory = product.category || "General";
-  const productFeatures = product.features || [
-    "High Quality Build",
-    "Premium Performance",
-    "Modern Design",
-    "1 Year Warranty"
-  ];
+  productDetails({ productId: id });  
 
   return (
     <div className="product-details-page">
@@ -61,45 +29,29 @@ const ProductDetails: React.FC = () => {
       <div className="product-details-container">
         <div className="product-visual">
           <div className="image-wrapper">
-            <img src={productImage} alt={product.name} />
+
+            <img src={productData?.image} />
           </div>
           <div className="visual-badges">
-            <span className="category-badge">{productCategory}</span>
+            <span className="category-badge">{productData?.category}</span>
             <span className="rating-badge">
-              <StarIcon fill="#f59e0b" /> {productRating}
+              <StarIcon fill="#f59e0b" /> 4
             </span>
           </div>
         </div>
 
         <div className="product-content">
           <div className="main-info">
-            <h1>{product.name}</h1>
-            <div className="price-tag">${product.price}</div>
+            <h1>{productData?.name}</h1>
+            <div className="price-tag">${productData?.price}</div>
           </div>
 
           <div className="info-section">
             <h3>Description</h3>
-            <p>{product.description}</p>
+            <p>{productData?.description}</p>
           </div>
-
-          <div className="info-section">
-            <h3>Key Features</h3>
-            <div className="specs-grid">
-              {productFeatures.map((feature: string, index: number) => (
-                <div key={index} className="spec-item">
-                  <span>{feature}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
           <div className="action-section">
-            <CommonButton
-              title="Add to Cart"
-              svgIcon={<CartIcon />}
-              fluid
-              className="add-to-cart-btn"
-            />
+            <AddToCartBtn productId={productData?.id} />
           </div>
         </div>
       </div>

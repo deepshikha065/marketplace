@@ -1,122 +1,208 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { MOCK_PRODUCTS } from '../../constants/mockProducts';
-import CommonButton from '../../components/common/ui/commonButton/CommonButton';
-import { ArrowLeftIcon, LogoutIcon } from '../../assets/icons/svg';
-import { ROUTES } from '../../constants/routes';
-import './Cart.scss';
+import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeftIcon, LogoutIcon } from "../../assets/icons/svg";
+import CommonButton from "../../components/common/ui/commonButton/CommonButton";
+import { ROUTES } from "../../constants/routes";
+import "./Cart.scss";
+import api from "../../service/getService";
+
+interface CartItem {
+  id: string;
+  productId: string;
+  quantity: number;
+  product: {
+    name: string;
+    image: string;
+    price: number | string;
+  };
+}
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = React.useState([
-    { ...MOCK_PRODUCTS[0], quantity: 1 },
-    { ...MOCK_PRODUCTS[1], quantity: 2 },
-  ]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const subtotal = cartItems.reduce((acc, item) => {
-    const price = parseFloat(item.price.replace('$', ''));
-    return acc + (price * item.quantity);
-  }, 0);
-
-  const shipping = 15.00;
-  const total = subtotal + shipping;
-
-  const handleIncreaseItem = (itemId: string | number) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+  const getCart = async () => {
+    try {
+      const res = await api.get("/api/v1/cart");
+      setCartItems(res.data.items || []);
+    } catch (error) {
+      console.error("Failed to load cart items:", error);
+    }
   };
 
-  const handleDecreaseItem = (itemId: string | number) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === itemId
-          ? { ...item, quantity: Math.max(1, item.quantity - 1) }
-          : item
-      )
-    );
+  useEffect(() => {
+    getCart();
+  }, []);
+
+  const handleUpdateQuantity = async (
+    itemId: string,
+    newQuantity: number
+  ) => {
+    if (newQuantity < 1) return;
+
+    try {
+      await api.put(`/api/v1/cart/items/${itemId}`, {
+        quantity: newQuantity,
+      });
+      getCart();
+    } catch (error) {
+      console.error("Failed to update quantity:", error);
+    }
+  };
+
+  const handleRemoveItem = async (itemId: string) => {
+    try {
+      await api.delete(`/api/v1/cart/items/${itemId}`);
+      getCart();
+    } catch (error) {
+      console.error("Failed to remove item:", error);
+    }
+  };
+
+  const subtotal = useMemo(() => {
+    return cartItems.reduce((acc, item) => {
+      const price =
+        typeof item.product.price === "string"
+          ? parseFloat(item.product.price.replace("$", ""))
+          : item.product.price;
+
+      return acc + price * item.quantity;
+    }, 0);
+  }, [cartItems]);
+
+  const shipping = subtotal > 0 ? 15 : 0;
+  const total = subtotal + shipping;
+
+  const handleCheckout = async () => {
+    alert("Checkout successful!");
+    setCartItems([]);
   };
 
   return (
     <div className="cart-page">
       <div className="cart-header">
-        <button className="back-btn" onClick={() => navigate(ROUTES.MARKETPLACE)}>
-          <ArrowLeftIcon />
-          <span>Continue Shopping</span>
+        <button
+          onClick={() => navigate(ROUTES.MARKETPLACE)}
+          className="back-btn"
+        >
+          <ArrowLeftIcon /> Continue Shopping
         </button>
-        <h2 >My Cart</h2>
+        <h2>My Cart</h2>
       </div>
 
-      <div className="cart-container">
-        <div className="cart-items-section">
-          <div className="items-list">
-            {cartItems.map((item) => (
-              <div key={item.id} className="cart-item">
-                <div className="item-image">
-                  <img src={item.image} alt={item.name} />
-                </div>
-                <div className="item-details">
-                  <div className="item-info">
-                    <h3>{item.name}</h3>
-                    <p className="category">{item.category}</p>
+      {cartItems.length === 0 ? (
+        <div className="empty-cart">
+          <p>Your cart is empty</p>
+          <CommonButton
+            title="Shop Now"
+            onClick={() => navigate(ROUTES.MARKETPLACE)}
+          />
+        </div>
+      ) : (
+        <div className="cart-container">
+          <div className="cart-items-section">
+            <div className="items-list">
+              {cartItems.map((item) => (
+                <div key={item.id} className="cart-item">
+                  <div className="item-image">
+                    <img
+                      src={item.product.image}
+                      alt={item.product.name}
+                    />
                   </div>
-                  <div className="item-quantity">
-                    <span className="qty-label">Quantity:</span>
-                    <div className="qty-controls">
-                      <button
-                        className="qty-btn"
-                        onClick={() => handleDecreaseItem(item.id)}
-                      >
-                        -
-                      </button>
-                      <span className="qty-value">{item.quantity}</span>
-                      <button
-                        className="qty-btn"
-                        onClick={() => handleIncreaseItem(item.id)}
-                      >
-                        +
-                      </button>
+                  <div className="item-details">
+                    <div className="item-info">
+                      <h3>{item.product.name}</h3>
+                      <p className="category">
+                        Product ID: {item.productId}
+                      </p>
+                    </div>
+
+                    <div className="item-quantity">
+                      <span className="qty-label">Quantity:</span>
+                      <div className="qty-controls">
+                        <button
+                          className="qty-btn"
+                          disabled={item.quantity <= 1}
+                          onClick={() =>
+                            handleUpdateQuantity(
+                              item.id,
+                              item.quantity - 1
+                            )
+                          }
+                        >
+                          -
+                        </button>
+                        <span className="qty-value">
+                          {item.quantity}
+                        </span>
+                        <button
+                          className="qty-btn"
+                          onClick={() =>
+                            handleUpdateQuantity(
+                              item.id,
+                              item.quantity + 1
+                            )
+                          }
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="item-price-actions">
-                  <span className="item-price">{item.price}</span>
-                  <button className="remove-btn" title="Remove">
-                    <LogoutIcon />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        <div className="cart-summary-section">
-          <div className="summary-card">
-            <h3>Order Summary</h3>
-            <div className="summary-row">
-              <span className="label">Subtotal</span>
-              <span className="value">${subtotal.toFixed(2)}</span>
+                  <div className="item-price-actions">
+                    <span className="item-price">
+                      $
+                      {(
+                        (typeof item.product.price === "string"
+                          ? parseFloat(
+                            item.product.price.replace("$", "")
+                          )
+                          : item.product.price) * item.quantity
+                      ).toFixed(2)}
+                    </span>
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemoveItem(item.id)}
+                    >
+                      <LogoutIcon />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="summary-row">
-              <span className="label">Shipping</span>
-              <span className="value">${shipping.toFixed(2)}</span>
+          </div>
+
+          {/* SUMMARY */}
+          <div className="cart-summary-section">
+            <div className="summary-card">
+              <h3>Order Summary</h3>
+
+              <div className="summary-row">
+                <span>Subtotal</span>
+                <span>${subtotal.toFixed(2)}</span>
+              </div>
+
+              <div className="summary-row">
+                <span>Shipping</span>
+                <span>${shipping.toFixed(2)}</span>
+              </div>
+              <div className="summary-divider" />
+              <div className="summary-row total">
+                <span>Total</span>
+                <span>${total.toFixed(2)}</span>
+              </div>
+              <CommonButton
+                title="Proceed to Checkout"
+                fluid
+                className="checkout-btn"
+                onClick={handleCheckout}
+              />
             </div>
-            <div className="summary-divider"></div>
-            <div className="summary-row total">
-              <span className="label">Total</span>
-              <span className="value">${total.toFixed(2)}</span>
-            </div>
-            <CommonButton
-              title="Proceed to Checkout"
-              fluid
-              className="checkout-btn"
-              onClick={() => console.log('Checkout clicked')}
-            />
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
