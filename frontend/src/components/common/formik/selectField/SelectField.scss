@@ -18,7 +18,7 @@
   .form__control {
     background-image: none;
     border: .1rem solid rgba($black, .2);
-    background: $white;
+    background: $black;
     font-size: 1.6rem;
     width: 100%;
     caret-color: $textblack;
@@ -88,6 +88,7 @@
     margin: 0;
     padding: 0;
     z-index: 2;
+    background-color: $black;
 
     &-list {
       width: 100%;
@@ -118,7 +119,7 @@
 
     &--is-selected {
       background: transparent;
-      color: $black;
+      color: $white;
       font-weight: 500;
     }
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../../constant";
+import { ADMIN, BASE_URL, LOGIN, SIGNUP } from "../../constant";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -41,13 +41,13 @@ export interface SignupPayload {
 
 export const adminLoginApi = async (data: LoginPayload) => {
   // const res = await api.post("/api/v1/admin/login", data);
-  const res = await api.post("/api/auth/login", data);
+  const res = await api.post(LOGIN, data);
 
   return res.data;
 };
 
 export const registerUserApi = async (data: SignupPayload) => {
-  const res = await api.post("/api/auth/signup", data);
+  const res = await api.post(SIGNUP, data);
   return res.data;
 };
 
@@ -86,17 +86,12 @@ export const removeCartItemApi = async (itemId: string) => {
 
 // Admin Product APIs
 export const createProductApi = async (productData: any) => {
-  const res = await api.post("/api/v1/admin/products", productData);
+  const res = await api.post(`${ADMIN}/products`, productData);
   return res.data;
 };
 
 export const updateProductApi = async (id: string, productData: any) => {
-  const res = await api.put(`/api/v1/admin/products/${id}`, productData);
-  return res.data;
-};
-
-export const deleteProductApi = async (id: string) => {
-  const res = await api.delete(`/api/v1/admin/products/${id}`);
+  const res = await api.put(`${ADMIN}/products/${id}`, productData);
   return res.data;
 };
 

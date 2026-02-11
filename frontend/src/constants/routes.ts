@@ -9,4 +9,6 @@ export const ROUTES = {
   PRODUCT_DETAILS: "/product/:id",
   CART: "/cart",
   PRODUCTS_INFO: "/products-info",
+  ADD_PRODUCT: "/add-product",
+  EDIT_PRODUCT: "/edit-product/:id",
 };

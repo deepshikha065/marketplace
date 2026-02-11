@@ -17,6 +17,7 @@ import Profile from './pages/Profile/Profile';
 import Cart from './pages/Cart/Cart';
 import ProductsInfo from './pages/ProductsInfo/ProductsInfo';
 import { PrivateGuard, PublicGuard } from './AuthGuard';
+import ProductModal from './components/common/modals/productModal/ProductModal';
 
 
 const router = createBrowserRouter([
@@ -46,6 +47,8 @@ const router = createBrowserRouter([
       { path: ROUTES.PRODUCT_DETAILS, element: <ProductDetails /> },
       { path: ROUTES.CART, element: <Cart /> },
       { path: ROUTES.PRODUCTS_INFO, element: <ProductsInfo /> },
+      { path: ROUTES.ADD_PRODUCT, element: <ProductModal /> },
+      { path: ROUTES.EDIT_PRODUCT, element: <ProductModal /> }
     ],
   },
 ]);

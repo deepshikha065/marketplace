@@ -244,3 +244,21 @@ input {
     margin: 0;
   }
 }
+
+.page-header {
+  margin-bottom: 2.4rem;
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: $theme-text-secondary;
+    font-weight: 600;
+    font-size: 1.4rem;
+    @extend %transition;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}
