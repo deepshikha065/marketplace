@@ -5,7 +5,7 @@ import CommonButton from "../ui/commonButton/CommonButton";
 import { ROUTES } from "../../../constants/routes";
 
 interface AddToCartBtnProps {
-  productId: string;
+  productId: any;
   quantity?: number;
 }
 

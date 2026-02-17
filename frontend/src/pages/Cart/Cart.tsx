@@ -3,8 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon, LogoutIcon } from "../../assets/icons/svg";
 import CommonButton from "../../components/common/ui/commonButton/CommonButton";
 import { ROUTES } from "../../constants/routes";
-import "./Cart.scss";
 import api from "../../service/getService";
+import { CARTITEMSAPI } from "../../../constant";
+import "./Cart.scss";
+import Web3 from "web3";
+import ContractABI from "../../contract/ContractABI.json";
+import { useAppSelector } from "../../redux/app/hooks";
 
 interface CartItem {
   id: string;
@@ -41,7 +45,7 @@ const Cart: React.FC = () => {
     if (newQuantity < 1) return;
 
     try {
-      await api.put(`/api/v1/cart/items/${itemId}`, {
+      await api.put(`${CARTITEMSAPI}${itemId}`, {
         quantity: newQuantity,
       });
       getCart();
@@ -52,7 +56,7 @@ const Cart: React.FC = () => {
 
   const handleRemoveItem = async (itemId: string) => {
     try {
-      await api.delete(`/api/v1/cart/items/${itemId}`);
+      await api.delete(`${CARTITEMSAPI}${itemId}`);
       getCart();
     } catch (error) {
       console.error("Failed to remove item:", error);
@@ -70,12 +74,69 @@ const Cart: React.FC = () => {
     }, 0);
   }, [cartItems]);
 
-  const shipping = subtotal > 0 ? 15 : 0;
+  const shipping = subtotal > 0 ? 1 : 0;
   const total = subtotal + shipping;
 
   const handleCheckout = async () => {
-    alert("Checkout successful!");
-    setCartItems([]);
+    try {
+      if (cartItems.length === 0) return;
+
+      const payload = {
+        items: cartItems.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+        })),
+      };
+      const res = await api.post("/api/v1/checkout", payload);
+      console.log("Checkout response:", res.data);
+      setCartItems([]);
+      alert("Checkout successful!");
+    } catch (error) {
+      console.error("Checkout failed:", error);
+      alert("Checkout failed. Please try again.");
+    }
+  };
+
+  const contractAddress = "0x3f85aE8A8c760D4c2cEfE6691452aC73d5a11929";
+
+  const merchantAddress = "0x89D3292830107e6abd5b613be1BE80463A091C3D";
+
+  const { account } = useAppSelector((state) => state.wallet)
+
+  const handleCryptoCheckout = async () => {
+    if (!window.ethereum) {
+      alert("Install MetaMask");
+      return;
+    }
+
+    try {
+      const web3 = new Web3(window.ethereum);
+      const userAccount = account;
+
+      const contract = new web3.eth.Contract(
+        ContractABI,
+        contractAddress
+      );
+
+      const amountWithDecimals = BigInt(total.toString()) * BigInt(10 ** 18);
+
+      const tx = await contract.methods
+        .transfer(merchantAddress, amountWithDecimals)
+        .send({ from: userAccount });
+
+      console.log("Payment successful", tx);
+
+      alert("Payment successful!");
+
+      await api.post("/api/v1/checkout", {
+        txHash: tx.transactionHash,
+        amount: total,
+      });
+      getCart();
+    } catch (error) {
+      console.error("Crypto payment failed:", error);
+      alert("Payment failed");
+    }
   };
 
   return (
@@ -150,7 +211,6 @@ const Cart: React.FC = () => {
                       </div>
                     </div>
                   </div>
-
                   <div className="item-price-actions">
                     <span className="item-price">
                       $
@@ -198,6 +258,12 @@ const Cart: React.FC = () => {
                 fluid
                 className="checkout-btn"
                 onClick={handleCheckout}
+              />
+              <CommonButton
+                title="Pay with Crypto"
+                fluid
+                className="checkout-btn mt-4"
+                onClick={handleCryptoCheckout}
               />
             </div>
           </div>

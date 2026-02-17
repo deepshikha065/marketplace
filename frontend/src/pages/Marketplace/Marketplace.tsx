@@ -1,53 +1,77 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FilterIcon, StarIcon, CartIcon } from '../../assets/icons/svg';
-import CommonButton from '../../components/common/ui/commonButton/CommonButton';
-import FormControl from '../../components/common/formik/FormControl';
-import { ROUTES } from '../../constants/routes';
-import './Marketplace.scss';
-import api from '../../service/getService';
-import AddToCartBtn from '../../components/common/addToCartBtn/AddToCartBtn';
+import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { StarIcon } from "../../assets/icons/svg";
+import FormControl from "../../components/common/formik/FormControl";
+import { ROUTES } from "../../constants/routes";
+import api from "../../service/getService";
+import AddToCartBtn from "../../components/common/addToCartBtn/AddToCartBtn";
+import useDebounce from "../../hooks/useDebounce";
+import "./Marketplace.scss";
+
+interface Product {
+  id: string | number;
+  name: string;
+  price: number;
+  description: string;
+  category: string;
+  rating: number;
+  image: string;
+  createdAt?: string;
+}
 
 const Marketplace: React.FC = () => {
   const navigate = useNavigate();
+
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("all");
+
+  const debouncedSearch = useDebounce(search, 500);
+
   const categoryOptions = [
-    { value: 'all', label: 'All Categories' },
-    { value: 'audio', label: 'Audio' },
-    { value: 'wearables', label: 'Wearables' },
-    { value: 'photography', label: 'Photography' },
-    { value: 'computers', label: 'Computers' },
+    { value: "all", label: "All Categories" },
+    { value: "electronics", label: "Electronics" },
+    { value: "fashion", label: "Fashion" },
+    { value: "sports", label: "Sports" },
+    { value: "furniture", label: "Furniture" },
   ];
-
-  const sortOptions = [
-    { value: 'recent', label: 'Newest First' },
-    { value: 'price-low', label: 'Price: Low to High' },
-    { value: 'price-high', label: 'Price: High to Low' },
-    { value: 'rating', label: 'Top Rated' },
-  ];
-
-  const [products, setProducts] = React.useState([]);
-
-  const productDetails = async () => {
-    const response = await api.get('/api/v1/products');
-    const data = response.data.products;
-    setProducts(data);
-  }
 
   useEffect(() => {
-    productDetails();
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get("/api/v1/products");
+        setAllProducts(response.data.products || []);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
   }, []);
 
+  const filteredProducts = useMemo(() => {
+    return allProducts.filter((product) => {
+      const matchesSearch =
+        product.name?.toLowerCase() ||
+        product.description?.toLowerCase() ||
+        product.category?.toLowerCase();
+      const matchesCategory =
+        category === "all" ||
+        product.category?.toLowerCase() === category.toLowerCase();
+      console.log(matchesSearch, matchesCategory);
+      return matchesSearch && matchesCategory;
+    });
+  }, [allProducts, debouncedSearch, category]);
 
-  const openDetails = async (productId: string | number) => {
-    console.log("Product ID:", productId);
-    navigate(ROUTES.PRODUCT_DETAILS.replace(':id', productId.toString()));
+  const openDetails = (productId: string | number) => {
+    navigate(ROUTES.PRODUCT_DETAILS.replace(":id", productId.toString()));
   };
+
   return (
     <div className="marketplace-page">
       <div className="marketplace-header">
         <div className="header-left">
           <h1 className="h2">Marketplace</h1>
-          <p>Explore our curated collection of premium tech products</p>
+          <p>Explore our curated collection of premium products</p>
         </div>
         <div className="header-actions">
           <div className="search-wrapper">
@@ -55,34 +79,22 @@ const Marketplace: React.FC = () => {
               name="search"
               placeholder="Search products..."
               className="marketplace-search"
+              value={search}
+              onChange={(e: any) => setSearch(e.target.value)}
             />
           </div>
-          <div className="filter-group">
-            <FormControl
-              control="select"
-              name="category"
-              options={categoryOptions}
-              value="all"
-              className="marketplace-select"
-            />
-            <FormControl
-              control="select"
-              name="sort"
-              options={sortOptions}
-              value="recent"
-              className="marketplace-select"
-            />
-            <CommonButton
-              title="Filters"
-              svgIcon={<FilterIcon />}
-            />
-          </div>
+          <FormControl
+            control="select"
+            name="category"
+            options={categoryOptions}
+            value={category}
+            className="marketplace-select"
+            onChange={(value: string) => setCategory(value || "all")}
+          />
         </div>
       </div>
-      <div>
-      </div>
       <div className="products-grid">
-        {products.map((product: any) => (
+        {filteredProducts.map((product) => (
           <div className="product-card" key={product.id}>
             <div className="product-image">
               <img src={product.image} alt={product.name} />
@@ -92,26 +104,33 @@ const Marketplace: React.FC = () => {
                 <span>{product.rating}</span>
               </div>
             </div>
+
             <div className="product-info">
               <div className="name-price">
                 <h3>{product.name}</h3>
-                <span className="price">{product.price}</span>
+                <span className="price">₹{product.price}</span>
               </div>
+
               <p className="description">{product.description}</p>
+
               <div className="product-actions">
                 <button
                   className="view-details-btn"
                   onClick={() => openDetails(product.id)}
-                // id=''
                 >
                   View Details
                 </button>
+
                 <AddToCartBtn productId={product.id} />
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {filteredProducts.length === 0 && (
+        <div className="empty-state">No products found.</div>
+      )}
     </div>
   );
 };

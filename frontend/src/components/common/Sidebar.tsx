@@ -7,7 +7,6 @@ import { useAppSelector } from '../../redux/app/hooks';
 
 const Sidebar: React.FC = () => {
   const { user } = useAppSelector(state => state.user);
-  console.log("user", user.user.role);
 
   if (user.user.role === 'ADMIN') {
     return (
@@ -46,6 +45,10 @@ const Sidebar: React.FC = () => {
         <NavLink to={ROUTES.MARKETPLACE} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
           <MarketplaceIcon />
           <span>Marketplace</span>
+        </NavLink>
+        <NavLink to={ROUTES.TOKEN} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <DashboardIcon />
+          <span>Token</span>
         </NavLink>
       </nav>
     </aside>

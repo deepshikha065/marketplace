@@ -11,4 +11,5 @@ export const ROUTES = {
   PRODUCTS_INFO: "/products-info",
   ADD_PRODUCT: "/add-product",
   EDIT_PRODUCT: "/edit-product/:id",
+  TOKEN : "/token"
 };

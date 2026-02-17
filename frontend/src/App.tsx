@@ -18,6 +18,7 @@ import Cart from './pages/Cart/Cart';
 import ProductsInfo from './pages/ProductsInfo/ProductsInfo';
 import { PrivateGuard, PublicGuard } from './AuthGuard';
 import ProductModal from './components/common/modals/productModal/ProductModal';
+import Token from './pages/token/Token';
 
 
 const router = createBrowserRouter([
@@ -48,7 +49,8 @@ const router = createBrowserRouter([
       { path: ROUTES.CART, element: <Cart /> },
       { path: ROUTES.PRODUCTS_INFO, element: <ProductsInfo /> },
       { path: ROUTES.ADD_PRODUCT, element: <ProductModal /> },
-      { path: ROUTES.EDIT_PRODUCT, element: <ProductModal /> }
+      { path: ROUTES.EDIT_PRODUCT, element: <ProductModal /> },
+      { path: ROUTES.TOKEN, element: <Token /> }
     ],
   },
 ]);

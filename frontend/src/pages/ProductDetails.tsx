@@ -10,12 +10,15 @@ const ProductDetails: React.FC = () => {
   const { id } = useParams();
   const [productData, setProductData] = React.useState<any>(null);
 
-  const productDetails = async ({ productId }: { productId: any }) => {
-    const response = await api.get(`/api/v1/products/${productId}`);
-    const data = response.data;
-    setProductData(data);
-  }
-  productDetails({ productId: id });  
+  React.useEffect(() => {
+    if (id) {
+      const fetchProduct = async () => {
+        const response = await api.get(`/api/v1/products/${id}`);
+        setProductData(response.data);
+      };
+      fetchProduct();
+    }
+  }, [id]);
 
   return (
     <div className="product-details-page">

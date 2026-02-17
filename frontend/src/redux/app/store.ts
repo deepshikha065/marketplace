@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "../../features/user/userSlice";
+import walletReducer from "../../features/wallet/WalletSlice";
 import {
   persistReducer,
   persistStore,
@@ -14,6 +15,7 @@ import storage from "redux-persist/lib/storage";
 
 const rootReducer = combineReducers({
   user: userReducer,
+  wallet: walletReducer,
 });
 
 const persistConfig = {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ADMIN, BASE_URL, LOGIN, SIGNUP } from "../../constant";
+import { ADMIN, BASE_URL, CARTAPI, LOGIN, PRODUCTSAPI, SIGNUP } from "../../constant";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -52,12 +52,12 @@ export const registerUserApi = async (data: SignupPayload) => {
 };
 
 export const getProductsApi = async () => {
-  const res = await api.get("/api/v1/products");
+  const res = await api.get(PRODUCTSAPI);
   return res.data;
 };
 
 export const getProductByIdApi = async (id: string) => {
-  const res = await api.get(`/api/v1/products/${id}`);
+  const res = await api.get(`${PRODUCTSAPI}${id}`);
   return res.data;
 };
 
@@ -65,22 +65,22 @@ export const addProductApi = async (data: {
   productId: string;
   quantity: number;
 }) => {
-  const res = await api.post("/api/v1/cart/items", data);
+  const res = await api.post(`${CARTAPI}items`, data);
   return res.data;
 };
 
 export const getProductCartApi = async () => {
-  const res = await api.get("/api/v1/cart");
+  const res = await api.get(CARTAPI);
   return res.data;
 };
 
 export const updateCartItemApi = async (itemId: string, quantity: number) => {
-  const res = await api.patch(`/api/v1/cart/items/${itemId}`, { quantity });
+  const res = await api.patch(`${CARTAPI}items/${itemId}`, { quantity });
   return res.data;
 };
 
 export const removeCartItemApi = async (itemId: string) => {
-  const res = await api.delete(`/api/v1/cart/items/${itemId}`);
+  const res = await api.delete(`${CARTAPI}items/${itemId}`);
   return res.data;
 };
 
