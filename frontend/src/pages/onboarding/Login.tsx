@@ -46,8 +46,8 @@ const Login: React.FC = () => {
         console.log(result);
         toast.success(result.message);
         navigate(ROUTES.MARKETPLACE);
-      } catch (error: Error | any) {
-        toast.error(error);
+      } catch (error: unknown) {
+        toast.error(error as string);
       }
     },
   });

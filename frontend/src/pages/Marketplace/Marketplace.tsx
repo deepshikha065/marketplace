@@ -68,7 +68,6 @@ const Marketplace: React.FC = () => {
       return matchesSearch && matchesCategory;
     });
 
-    // 🔥 Apply Sorting
     if (sortOrder === "low-high") {
       filtered = [...filtered].sort((a, b) => a.price - b.price);
     } else if (sortOrder === "high-low") {
@@ -98,7 +97,7 @@ const Marketplace: React.FC = () => {
               placeholder="Search products..."
               className="marketplace-search"
               value={search}
-              onChange={(e: any) => setSearch(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
             />
           </div>
           <FormControl

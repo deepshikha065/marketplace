@@ -9,7 +9,7 @@ import ContractABI from "../../contract/ContractABI.json";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import toast from "react-hot-toast";
 import QuantitySelector from "../../components/common/addToCartBtn/ShowQty";
-import { updateItemQuantity, removeItemFromCart } from "../../features/cartSlice";
+import { updateItemQuantity, removeItemFromCart, fetchCart } from "../../features/cartSlice";
 import api from "../../service/getService";
 
 const Cart: React.FC = () => {
@@ -53,6 +53,7 @@ const Cart: React.FC = () => {
       };
       await api.post("/api/v1/checkout", payload);
       toast.success("Checkout successful!");
+      dispatch(fetchCart());
     } catch (error) {
       console.error("Checkout failed:", error);
       toast.error("Checkout failed. Please try again.");
@@ -77,7 +78,7 @@ const Cart: React.FC = () => {
       const userAccount = account;
 
       const contract = new web3.eth.Contract(
-        ContractABI as any,
+        ContractABI as any, // eslint-disable-line @typescript-eslint/no-explicit-any
         contractAddress
       );
 

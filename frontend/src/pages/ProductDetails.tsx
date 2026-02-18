@@ -5,10 +5,20 @@ import './ProductDetails.scss';
 import api from '../service/getService';
 import AddToCartBtn from '../components/common/addToCartBtn/AddToCartBtn';
 
+interface Product {
+  id: string | number;
+  name: string;
+  price: number;
+  description: string;
+  category: string;
+  rating: number;
+  image: string;
+}
+
 const ProductDetails: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [productData, setProductData] = React.useState<any>(null);
+  const [productData, setProductData] = React.useState<Product | null>(null);
 
   React.useEffect(() => {
     if (id) {
@@ -57,7 +67,7 @@ const ProductDetails: React.FC = () => {
             <p>{productData?.description}</p>
           </div>
           <div className="action-section">
-            <AddToCartBtn productId={productData?.id} />
+            {productData?.id && <AddToCartBtn productId={productData.id} />}
           </div>
         </div>
       </div>

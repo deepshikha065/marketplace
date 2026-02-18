@@ -84,12 +84,12 @@ export const removeCartItemApi = async (itemId: string) => {
 };
 
 // Admin Product APIs
-export const createProductApi = async (productData: any) => {
+export const createProductApi = async (productData: unknown) => {
   const res = await api.post(`${ADMIN}/products`, productData);
   return res.data;
 };
 
-export const updateProductApi = async (id: string, productData: any) => {
+export const updateProductApi = async (id: string, productData: unknown) => {
   const res = await api.put(`${ADMIN}/products/${id}`, productData);
   return res.data;
 };

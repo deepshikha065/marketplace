@@ -1,9 +1,13 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import { 
-  getProductCartApi, 
-  addProductApi, 
-  updateCartItemApi, 
-  removeCartItemApi 
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
+import {
+  getProductCartApi,
+  addProductApi,
+  updateCartItemApi,
+  removeCartItemApi,
 } from "../service/getService";
 
 interface CartItem {
@@ -21,12 +25,12 @@ interface CartItem {
 
 interface CartState {
   items: CartItem[];
-  status: 'idle' | 'loading' | 'failed';
+  status: "idle" | "loading" | "failed";
 }
 
 const initialState: CartState = {
   items: [],
-  status: 'idle',
+  status: "idle",
 };
 
 // Async Thunks
@@ -39,7 +43,7 @@ export const addItemToCart = createAsyncThunk(
   "cart/addItem",
   async (payload: { productId: string; quantity: number }, { dispatch }) => {
     await addProductApi(payload);
-    dispatch(fetchCart()); // Refresh cart after adding
+    dispatch(fetchCart());
   }
 );
 
@@ -47,7 +51,7 @@ export const updateItemQuantity = createAsyncThunk(
   "cart/updateQuantity",
   async (payload: { itemId: string; quantity: number }, { dispatch }) => {
     await updateCartItemApi(payload.itemId, payload.quantity);
-    dispatch(fetchCart()); 
+    dispatch(fetchCart());
   }
 );
 
@@ -70,14 +74,14 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCart.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.status = "idle";
         state.items = action.payload;
       })
       .addCase(fetchCart.rejected, (state) => {
-        state.status = 'failed';
+        state.status = "failed";
       });
   },
 });

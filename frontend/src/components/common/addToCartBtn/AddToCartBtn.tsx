@@ -6,7 +6,7 @@ import { addItemToCart, updateItemQuantity, removeItemFromCart } from "../../../
 import QuantitySelector from "./ShowQty";
 
 interface AddToCartBtnProps {
-  productId: any;
+  productId: string | number;
   showQtySelector?: boolean;
 }
 
@@ -22,7 +22,7 @@ const AddToCartBtn: React.FC<AddToCartBtnProps> = ({
 
   const handleAddToCart = () => {
     if (productId) {
-      dispatch(addItemToCart({ productId, quantity: 1 }));
+      dispatch(addItemToCart({ productId: productId.toString(), quantity: 1 }));
     }
   };
 

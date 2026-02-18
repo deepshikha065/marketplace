@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProfileIcon, CartIcon, LogoutIcon } from "../../assets/icons/svg";
 import { ROUTES } from "../../constants/routes";
@@ -11,7 +11,9 @@ import "./Header.scss";
 
 declare global {
   interface Window {
-    ethereum?: any;
+    ethereum?: {
+      request: (args: { method: string; params?: unknown[] }) => Promise<string[]>;
+    };
   }
 }
 
@@ -24,7 +26,8 @@ const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user.user);
   const account = useAppSelector((state) => state.wallet.account) || "";
-
+  const { items: cartItems } = useAppSelector((state) => state.cart);
+  console.log("cartItems", cartItems.length);
   const connectWallet = async () => {
     try {
       if (!window.ethereum) {
@@ -85,7 +88,7 @@ const Header: React.FC = () => {
         >
           <CartIcon />
         </button>
-
+        
         <div className="profile-dropdown-container" ref={dropdownRef}>
           <button
             className={`icon-btn profile-btn ${isDropdownOpen ? "active" : ""}`}

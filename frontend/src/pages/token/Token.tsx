@@ -11,7 +11,7 @@ const Token = () => {
 
   const { account } = useAppSelector((state) => state.wallet);
 
-  const [contract, setContract] = useState<any>(null);
+  const [contract, setContract] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -24,8 +24,8 @@ const Token = () => {
 
     const initWeb3 = async () => {
       try {
-        const web3Instance = new Web3(window.ethereum);
-        await window.ethereum.request({ method: "eth_requestAccounts" });
+        const web3Instance = new Web3(window.ethereum!);
+        await window.ethereum!.request({ method: "eth_requestAccounts" });
 
         const contractInstance = new web3Instance.eth.Contract(
           ContractABI,
@@ -90,7 +90,7 @@ const Token = () => {
             placeholder="Enter Amount"
             name="amount"
             value={amount}
-            onChange={(e: any) => setAmount(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
           />
         </Col>
       </Row>

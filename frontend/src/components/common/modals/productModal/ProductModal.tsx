@@ -8,14 +8,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createProductApi, updateProductApi, getProductByIdApi } from "../../../../service/getService";
 import { useEffect, useState } from "react";
 
+interface Product {
+  id?: string;
+  name: string;
+  description: string;
+  price: string | number;
+  image: string;
+  itemsAvailable: string | number;
+  category: string;
+  isPublished: boolean;
+  rating?: number;
+}
+
 interface ProductModalProps {
-  product?: any;
+  product?: Product;
 }
 
 const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [product, setProduct] = useState<any>(initialProduct || null);
+  const [product, setProduct] = useState<Product | null>(initialProduct || null);
 
   useEffect(() => {
     if (id && !initialProduct) {
@@ -75,9 +87,7 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
           ...values,
           price: Number(values.price),
           itemsAvailable: Number(values.itemsAvailable),
-          isPublished:
-            values.isPublished === true ||
-            values.isPublished === "true",
+          isPublished: Boolean(values.isPublished),
         };
 
         if (product?.id) {
@@ -91,9 +101,10 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
           navigate(-1);
         }
 
-      } catch (error: any) {
-        console.error("Error saving product:", error?.response?.data || error);
-        alert(error?.response?.data?.message || "Error saving product");
+      } catch (error: unknown) {
+        const err = error as { response?: { data?: { message?: string } } };
+        console.error("Error saving product:", err?.response?.data || error);
+        alert(err?.response?.data?.message || "Error saving product");
       } finally {
         setSubmitting(false);
       }

@@ -1,19 +1,33 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { adminLoginApi, registerUserApi } from "../service/getService";
 
+interface UserInfo {
+  name: string;
+  email: string;
+  role: string;
+}
+
+interface UserPayload {
+  user: UserInfo;
+  token?: string;
+  message?: string;
+}
+
 interface UserState {
-  user?: any | null;
-  loading?: boolean;
-  error?: string | null;
-  isAuthenticated?: boolean;
-  token?: string | null;
+  user: UserPayload;
+  loading: boolean;
+  error: string | null;
+  isAuthenticated: boolean;
+  token: string | null;
 }
 
 const initialState: UserState = {
   user: {
-    name: "",
-    email: "",
-    role: "",
+    user: {
+      name: "",
+      email: "",
+      role: "",
+    },
   },
   loading: false,
   error: null,
@@ -21,14 +35,23 @@ const initialState: UserState = {
   token: null,
 };
 
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}
+
 export const adminLogin = createAsyncThunk(
   "auth/adminLogin",
   async (data: { email: string; password: string }, { rejectWithValue }) => {
     try {
       const res = await adminLoginApi(data);
       return res;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Login failed");
+    } catch (error: unknown) {
+      const errorMessage = (error as ApiError)?.response?.data?.message || "Login failed";
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -47,8 +70,9 @@ export const resigterUser = createAsyncThunk(
     try {
       const res = await registerUserApi(data);
       return res;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Sign up failed");
+    } catch (error: unknown) {
+      const errorMessage = (error as ApiError)?.response?.data?.message || "Sign up failed";
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -57,9 +81,9 @@ const handlePending = (state: UserState) => {
   state.loading = true;
   state.error = null;
 };
-const handleReject = (state: UserState, action: any) => {
+const handleReject = (state: UserState, action: { payload: unknown }) => {
   state.loading = false;
-  state.error = action.payload;
+  state.error = action.payload as string;
 };
 
 const userSlice = createSlice({
@@ -67,7 +91,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logOutUser(state) {
-      state.user = null;
+      state.user = initialState.user;
       state.isAuthenticated = false;
       state.token = null;
     },

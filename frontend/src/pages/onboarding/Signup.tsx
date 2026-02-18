@@ -54,9 +54,8 @@ const Signup: React.FC = () => {
         console.log(result);
         toast.success(result.message);
         navigate(ROUTES.LOGIN);
-      } catch (error: Error | any) {
-        // console.log("error signup", error);
-        toast.error(error);
+      } catch (error: unknown) {
+        toast.error(error as string);
       }
     }
   });

@@ -6,20 +6,35 @@ import api from '../../service/getService';
 import './ProductsInfo.scss';
 import { ROUTES } from '../../constants/routes';
 
+interface Product {
+  id: string;
+  name: string;
+  image: string;
+  category: string;
+  price: number;
+  itemsAvailable: number;
+  isPublished: boolean;
+  rating?: number;
+}
+
 const ProductsInfo = () => {
 
   const navigate = useNavigate();
-  const [products, setProducts] = React.useState([]);
-
-  const productDetails = async () => {
-    const response = await api.get('/api/v1/products');
-    const data = response.data.products;
-    setProducts(data);
-  }
+  const [products, setProducts] = React.useState<Product[]>([]);
+  const [refresh, setRefresh] = React.useState(0);
 
   useEffect(() => {
-    productDetails();
-  }, []);
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get('/api/v1/products');
+        const data = response.data.products;
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+    fetchProducts();
+  }, [refresh]);
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
@@ -27,7 +42,7 @@ const ProductsInfo = () => {
         const res = await api.delete(`/api/v1/admin/products/${id}`);
         console.log('Product deleted:', res.data);
         alert('Product deleted successfully');
-        productDetails();
+        setRefresh(prev => prev + 1);
       } catch (error) {
         console.error('Error deleting product:', error);
       }
@@ -62,7 +77,7 @@ const ProductsInfo = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product: any) => (
+            {products.map((product) => (
               <tr key={product.id}>
                 <td>
                   <div className="product-cell">
