@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { adminLoginApi, registerUserApi } from "../../service/getService";
+import { adminLoginApi, registerUserApi } from "../service/getService";
 
 interface UserState {
   user?: any | null;

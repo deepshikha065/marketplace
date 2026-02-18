@@ -9,6 +9,12 @@
     gap: 2rem;
     flex-wrap: wrap;
 
+    .common_select {
+      .form__control {
+        min-width: 20rem;
+      }
+    }
+
     .header-left {
       h1 {
         margin-bottom: 0.8rem;

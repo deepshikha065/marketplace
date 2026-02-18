@@ -25,8 +25,8 @@ const Marketplace: React.FC = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
-
-  const debouncedSearch = useDebounce(search, 500);
+  const [sortOrder, setSortOrder] = useState("default");
+  const debouncedSearch = useDebounce(search, 1000);
 
   const categoryOptions = [
     { value: "all", label: "All Categories" },
@@ -34,6 +34,11 @@ const Marketplace: React.FC = () => {
     { value: "fashion", label: "Fashion" },
     { value: "sports", label: "Sports" },
     { value: "furniture", label: "Furniture" },
+  ];
+  const sortOptions = [
+    { value: "default", label: "Sort By" },
+    { value: "low-high", label: "Price: Low to High" },
+    { value: "high-low", label: "Price: High to Low" },
   ];
 
   useEffect(() => {
@@ -47,20 +52,33 @@ const Marketplace: React.FC = () => {
     };
     fetchProducts();
   }, []);
-
   const filteredProducts = useMemo(() => {
-    return allProducts.filter((product) => {
+    let filtered = allProducts.filter((product) => {
+      const searchText = debouncedSearch.toLowerCase();
+
       const matchesSearch =
-        product.name?.toLowerCase() ||
-        product.description?.toLowerCase() ||
-        product.category?.toLowerCase();
+        product.name?.toLowerCase().includes(searchText) ||
+        product.description?.toLowerCase().includes(searchText) ||
+        product.category?.toLowerCase().includes(searchText);
+
       const matchesCategory =
         category === "all" ||
         product.category?.toLowerCase() === category.toLowerCase();
-      console.log(matchesSearch, matchesCategory);
+
       return matchesSearch && matchesCategory;
     });
-  }, [allProducts, debouncedSearch, category]);
+
+    // 🔥 Apply Sorting
+    if (sortOrder === "low-high") {
+      filtered = [...filtered].sort((a, b) => a.price - b.price);
+    } else if (sortOrder === "high-low") {
+      filtered = [...filtered].sort((a, b) => b.price - a.price);
+    }
+
+    return filtered;
+  }, [allProducts, debouncedSearch, category, sortOrder]);
+
+
 
   const openDetails = (productId: string | number) => {
     navigate(ROUTES.PRODUCT_DETAILS.replace(":id", productId.toString()));
@@ -91,6 +109,15 @@ const Marketplace: React.FC = () => {
             className="marketplace-select"
             onChange={(value: string) => setCategory(value || "all")}
           />
+          <FormControl
+            control="select"
+            name="sort"
+            options={sortOptions}
+            value={sortOrder}
+            className="marketplace-select"
+            onChange={(value: string) => setSortOrder(value || "default")}
+          />
+
         </div>
       </div>
       <div className="products-grid">

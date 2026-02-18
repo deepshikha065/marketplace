@@ -42,7 +42,6 @@ export interface SignupPayload {
 export const adminLoginApi = async (data: LoginPayload) => {
   // const res = await api.post("/api/v1/admin/login", data);
   const res = await api.post(LOGIN, data);
-
   return res.data;
 };
 
@@ -75,7 +74,7 @@ export const getProductCartApi = async () => {
 };
 
 export const updateCartItemApi = async (itemId: string, quantity: number) => {
-  const res = await api.patch(`${CARTAPI}items/${itemId}`, { quantity });
+  const res = await api.put(`${CARTAPI}items/${itemId}`, { quantity });
   return res.data;
 };
 

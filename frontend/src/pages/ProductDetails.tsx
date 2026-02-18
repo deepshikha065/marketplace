@@ -13,8 +13,12 @@ const ProductDetails: React.FC = () => {
   React.useEffect(() => {
     if (id) {
       const fetchProduct = async () => {
-        const response = await api.get(`/api/v1/products/${id}`);
-        setProductData(response.data);
+        try {
+          const response = await api.get(`/api/v1/products/${id}`);
+          setProductData(response.data);
+        } catch (error) {
+          console.error("Failed to fetch product:", error);
+        }
       };
       fetchProduct();
     }
@@ -32,13 +36,12 @@ const ProductDetails: React.FC = () => {
       <div className="product-details-container">
         <div className="product-visual">
           <div className="image-wrapper">
-
-            <img src={productData?.image} />
+            <img src={productData?.image} alt={productData?.name} />
           </div>
           <div className="visual-badges">
             <span className="category-badge">{productData?.category}</span>
             <span className="rating-badge">
-              <StarIcon fill="#f59e0b" /> 4
+              <StarIcon fill="#f59e0b" /> {productData?.rating || 0}
             </span>
           </div>
         </div>

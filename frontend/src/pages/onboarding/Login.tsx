@@ -1,13 +1,14 @@
-import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
-import FormControl from '../../components/common/formik/FormControl';
-import CommonButton from '../../components/common/ui/commonButton/CommonButton';
-import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
-import { adminLogin } from '../../features/user/userSlice';
-import { ROUTES } from '../../constants/routes';
-import './Auth.scss';
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Link, useNavigate } from "react-router-dom";
+import FormControl from "../../components/common/formik/FormControl";
+import CommonButton from "../../components/common/ui/commonButton/CommonButton";
+import { useAppDispatch } from "../../redux/app/hooks";
+import { ROUTES } from "../../constants/routes";
+import "./Auth.scss";
+import toast from "react-hot-toast";
+import { adminLogin } from "../../features/userSlice";
 
 interface LoginFormValues {
   email: string;
@@ -16,30 +17,37 @@ interface LoginFormValues {
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
-  // const { user } = useAppSelector(state => state.user);
-  // console.log("user", user.user.name);
+
   const navigate = useNavigate();
 
   const formik = useFormik<LoginFormValues>({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema: Yup.object({
       email: Yup.string()
-        .email('Invalid email address')
-        .required('Email is required'),
+        .trim()
+        .email("Invalid email address")
+        .required("Email is required"),
       password: Yup.string()
-        .min(8, 'Password must be at least 8 characters')
-        .required('Password is required'),
+        .trim()
+        .min(8, "Password must be at least 8 characters")
+        .required("Password is required"),
     }),
     onSubmit: async (values) => {
-      console.log('Login values:', values);
-      const result = await dispatch(adminLogin(values));
-      console.log("result", result);
-
-      navigate(ROUTES.DASHBOARD);
-      if (adminLogin.fulfilled.match(result)) {
+      try {
+        const result = await dispatch(adminLogin(
+          {
+            email: values.email,
+            password: values.password
+          }
+        )).unwrap();
+        console.log(result);
+        toast.success(result.message);
+        navigate(ROUTES.MARKETPLACE);
+      } catch (error: Error | any) {
+        toast.error(error);
       }
     },
   });
@@ -60,7 +68,7 @@ const Login: React.FC = () => {
             label="Email Address"
             placeholder="Enter your email"
             type="email"
-            error={touched.email && errors.email ? errors.email : ''}
+            error={touched.email && errors.email ? errors.email : ""}
             value={formik.values.email}
             onChange={formik.handleChange}
           />
@@ -72,7 +80,7 @@ const Login: React.FC = () => {
             label="Password"
             placeholder="Enter your password"
             type="password"
-            error={touched.password && errors.password ? errors.password : ''}
+            error={touched.password && errors.password ? errors.password : ""}
             value={formik.values.password}
             onChange={formik.handleChange}
           />

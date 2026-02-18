@@ -262,3 +262,36 @@ input {
     }
   }
 }
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  background-color: rgba($white, 0.05);
+  border-radius: 0.8rem;
+  padding: 0.4rem;
+  justify-content: center;
+
+  .qty-btn {
+    width: 3.2rem;
+    height: 3.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: $theme-text;
+    @extend %transition;
+
+    &:hover {
+      color: $primary;
+      background-color: rgba($white, 0.05);
+      border-radius: 0.4rem;
+    }
+  }
+
+  .qty-value {
+    min-width: 4rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+}

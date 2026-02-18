@@ -15,10 +15,10 @@ const Sidebar: React.FC = () => {
           <h2>MarketPlace</h2>
         </div>
         <nav className="sidebar-nav">
-          <NavLink to={ROUTES.DASHBOARD} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          {/* <NavLink to={ROUTES.DASHBOARD} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <DashboardIcon />
             <span>Dashboard</span>
-          </NavLink>
+          </NavLink> */}
           <NavLink to={ROUTES.MARKETPLACE} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <MarketplaceIcon />
             <span>Marketplace</span>
@@ -38,10 +38,10 @@ const Sidebar: React.FC = () => {
         <h2>MarketPlace</h2>
       </div>
       <nav className="sidebar-nav">
-        <NavLink to={ROUTES.DASHBOARD} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+        {/* <NavLink to={ROUTES.DASHBOARD} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
           <DashboardIcon />
           <span>Dashboard</span>
-        </NavLink>
+        </NavLink> */}
         <NavLink to={ROUTES.MARKETPLACE} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
           <MarketplaceIcon />
           <span>Marketplace</span>

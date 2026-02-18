@@ -1,13 +1,14 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FormControl from '../../components/common/formik/FormControl';
 import CommonButton from '../../components/common/ui/commonButton/CommonButton';
 import { ROUTES } from '../../constants/routes';
-import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
-import { resigterUser } from '../../features/user/userSlice';
+import { useAppDispatch } from '../../redux/app/hooks';
 import './Auth.scss';
+import toast from 'react-hot-toast';
+import { resigterUser } from '../../features/userSlice';
 
 interface FormValues {
   name: string;
@@ -19,9 +20,8 @@ interface FormValues {
 const Signup: React.FC = () => {
 
   const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector(state => state.user);
+  const navigate = useNavigate();
 
-  console.log(loading, error);
   const formik = useFormik<FormValues>({
     initialValues: {
       name: '',
@@ -30,28 +30,34 @@ const Signup: React.FC = () => {
       confirmPassword: '',
     },
     validationSchema: Yup.object({
-      name: Yup.string().required('Full name is required'),
-      email: Yup.string()
+      name: Yup.string().trim().required('Full name is required'),
+      email: Yup.string().trim()
         .email('Invalid email address')
         .required('Email is required'),
-      password: Yup.string()
+      password: Yup.string().trim()
         .min(8, 'Password must be at least 8 characters')
         .required('Password is required'),
-      confirmPassword: Yup.string()
+      confirmPassword: Yup.string().trim()
         .oneOf([Yup.ref('password')], 'Passwords must match')
         .required('Confirm password is required'),
     }),
     onSubmit: async (values) => {
-      console.log("SUBMIT START");
-      const result = await dispatch(
-        resigterUser({
-          name: values.name,
-          email: values.email,
-          password: values.password,
-          confirmPassword: values.confirmPassword,
-        })
-      );
-      console.log("THUNK RESULT 👉", result);
+      try {
+        const result = await dispatch(
+          resigterUser({
+            name: values.name,
+            email: values.email,
+            password: values.password,
+            confirmPassword: values.confirmPassword,
+          })
+        ).unwrap();
+        console.log(result);
+        toast.success(result.message);
+        navigate(ROUTES.LOGIN);
+      } catch (error: Error | any) {
+        // console.log("error signup", error);
+        toast.error(error);
+      }
     }
   });
 

@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { NiceRegistry } from './NiceRegistry';
 import { ROUTES } from './constants/routes';
-import Dashboard from './pages/Dashboard';
+// import Dashboard from './pages/Dashboard';
 import AuthLayout from './components/onboarding/AuthLayout';
 import Login from './pages/onboarding/Login';
 import Signup from './pages/onboarding/Signup';
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       </PrivateGuard>
     ),
     children: [
-      { path: ROUTES.DASHBOARD, element: <Dashboard /> },
+      // { path: ROUTES.DASHBOARD, element: <Dashboard /> },
       { path: ROUTES.MARKETPLACE, element: <Marketplace /> },
       { path: ROUTES.PROFILE, element: <Profile /> },
       { path: ROUTES.CHANGE_PASSWORD, element: <ChangePassword /> },
@@ -52,6 +52,7 @@ const router = createBrowserRouter([
       { path: ROUTES.EDIT_PRODUCT, element: <ProductModal /> },
       { path: ROUTES.TOKEN, element: <Token /> }
     ],
+
   },
 ]);
 

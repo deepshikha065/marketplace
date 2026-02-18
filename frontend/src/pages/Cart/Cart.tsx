@@ -1,76 +1,40 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon, LogoutIcon } from "../../assets/icons/svg";
 import CommonButton from "../../components/common/ui/commonButton/CommonButton";
 import { ROUTES } from "../../constants/routes";
-import api from "../../service/getService";
-import { CARTITEMSAPI } from "../../../constant";
 import "./Cart.scss";
 import Web3 from "web3";
 import ContractABI from "../../contract/ContractABI.json";
-import { useAppSelector } from "../../redux/app/hooks";
-
-interface CartItem {
-  id: string;
-  productId: string;
-  quantity: number;
-  product: {
-    name: string;
-    image: string;
-    price: number | string;
-  };
-}
+import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
+import toast from "react-hot-toast";
+import QuantitySelector from "../../components/common/addToCartBtn/ShowQty";
+import { updateItemQuantity, removeItemFromCart } from "../../features/cartSlice";
+import api from "../../service/getService";
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const dispatch = useAppDispatch();
+  const { items: cartItems, status } = useAppSelector((state) => state.cart);
+  const { account } = useAppSelector((state) => state.wallet);
 
-  const getCart = async () => {
-    try {
-      const res = await api.get("/api/v1/cart");
-      setCartItems(res.data.items || []);
-    } catch (error) {
-      console.error("Failed to load cart items:", error);
-    }
-  };
-
-  useEffect(() => {
-    getCart();
-  }, []);
-
-  const handleUpdateQuantity = async (
-    itemId: string,
-    newQuantity: number
-  ) => {
+  const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
-
-    try {
-      await api.put(`${CARTITEMSAPI}${itemId}`, {
-        quantity: newQuantity,
-      });
-      getCart();
-    } catch (error) {
-      console.error("Failed to update quantity:", error);
-    }
+    dispatch(updateItemQuantity({ itemId, quantity: newQuantity }));
   };
 
-  const handleRemoveItem = async (itemId: string) => {
-    try {
-      await api.delete(`${CARTITEMSAPI}${itemId}`);
-      getCart();
-    } catch (error) {
-      console.error("Failed to remove item:", error);
-    }
+  const handleRemoveItem = (itemId: string) => {
+    dispatch(removeItemFromCart(itemId));
   };
 
   const subtotal = useMemo(() => {
     return cartItems.reduce((acc, item) => {
       const price =
-        typeof item.product.price === "string"
+        typeof item.product?.price === "string"
           ? parseFloat(item.product.price.replace("$", ""))
-          : item.product.price;
+          : item.product?.price || 0;
 
-      return acc + price * item.quantity;
+      return acc + (Number(price) * item.quantity);
     }, 0);
   }, [cartItems]);
 
@@ -87,25 +51,24 @@ const Cart: React.FC = () => {
           quantity: item.quantity,
         })),
       };
-      const res = await api.post("/api/v1/checkout", payload);
-      console.log("Checkout response:", res.data);
-      setCartItems([]);
-      alert("Checkout successful!");
+      await api.post("/api/v1/checkout", payload);
+      toast.success("Checkout successful!");
     } catch (error) {
       console.error("Checkout failed:", error);
-      alert("Checkout failed. Please try again.");
+      toast.error("Checkout failed. Please try again.");
     }
   };
 
   const contractAddress = "0x3f85aE8A8c760D4c2cEfE6691452aC73d5a11929";
-
   const merchantAddress = "0x89D3292830107e6abd5b613be1BE80463A091C3D";
-
-  const { account } = useAppSelector((state) => state.wallet)
 
   const handleCryptoCheckout = async () => {
     if (!window.ethereum) {
-      alert("Install MetaMask");
+      toast.error("Install MetaMask");
+      return;
+    }
+    if (!account) {
+      toast.error("Please Connect wallet");
       return;
     }
 
@@ -114,30 +77,34 @@ const Cart: React.FC = () => {
       const userAccount = account;
 
       const contract = new web3.eth.Contract(
-        ContractABI,
+        ContractABI as any,
         contractAddress
       );
 
-      const amountWithDecimals = BigInt(total.toString()) * BigInt(10 ** 18);
+      const amountWithDecimals = BigInt(
+        new Web3().utils.toWei(total.toString(), "ether")
+      );
 
       const tx = await contract.methods
-        .transfer(merchantAddress, amountWithDecimals)
+        .transfer(merchantAddress, amountWithDecimals.toString())
         .send({ from: userAccount });
 
-      console.log("Payment successful", tx);
-
-      alert("Payment successful!");
+      toast.success("Payment successful!");
 
       await api.post("/api/v1/checkout", {
         txHash: tx.transactionHash,
         amount: total,
       });
-      getCart();
+      // Refresh cart or clear it
     } catch (error) {
       console.error("Crypto payment failed:", error);
-      alert("Payment failed");
+      toast.error("Payment failed");
     }
   };
+
+  if (status === 'loading' && cartItems.length === 0) {
+    return <div className="cart-page"><p>Loading cart...</p></div>;
+  }
 
   return (
     <div className="cart-page">
@@ -167,59 +134,38 @@ const Cart: React.FC = () => {
                 <div key={item.id} className="cart-item">
                   <div className="item-image">
                     <img
-                      src={item.product.image}
-                      alt={item.product.name}
+                      src={item.product?.image}
+                      alt={item.product?.name}
                     />
                   </div>
                   <div className="item-details">
                     <div className="item-info">
-                      <h3>{item.product.name}</h3>
+                      <h3>{item.product?.name}</h3>
                       <p className="category">
-                        Product ID: {item.productId}
+                        Category: {item.product?.category}
                       </p>
                     </div>
 
                     <div className="item-quantity">
                       <span className="qty-label">Quantity:</span>
-                      <div className="qty-controls">
-                        <button
-                          className="qty-btn"
-                          disabled={item.quantity <= 1}
-                          onClick={() =>
-                            handleUpdateQuantity(
-                              item.id,
-                              item.quantity - 1
-                            )
-                          }
-                        >
-                          -
-                        </button>
-                        <span className="qty-value">
-                          {item.quantity}
-                        </span>
-                        <button
-                          className="qty-btn"
-                          onClick={() =>
-                            handleUpdateQuantity(
-                              item.id,
-                              item.quantity + 1
-                            )
-                          }
-                        >
-                          +
-                        </button>
-                      </div>
+                      <QuantitySelector
+                        value={item.quantity}
+                        min={1}
+                        onChange={(newQty) =>
+                          handleUpdateQuantity(item.id, newQty)
+                        }
+                      />
                     </div>
                   </div>
                   <div className="item-price-actions">
                     <span className="item-price">
                       $
                       {(
-                        (typeof item.product.price === "string"
+                        (typeof item.product?.price === "string"
                           ? parseFloat(
                             item.product.price.replace("$", "")
                           )
-                          : item.product.price) * item.quantity
+                          : item.product?.price || 0) * item.quantity
                       ).toFixed(2)}
                     </span>
                     <button
@@ -234,7 +180,6 @@ const Cart: React.FC = () => {
             </div>
           </div>
 
-          {/* SUMMARY */}
           <div className="cart-summary-section">
             <div className="summary-card">
               <h3>Order Summary</h3>

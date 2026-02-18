@@ -6,7 +6,7 @@ export const PublicGuard = ({ children }: { children: React.ReactNode }) => {
   const token = useAppSelector((state) => state.user.token);
 
   if (token) {
-    return <Navigate to={ROUTES.DASHBOARD} replace />;
+    return <Navigate to={ROUTES.MARKETPLACE} replace />;
   }
 
   return <>{children}</>;
