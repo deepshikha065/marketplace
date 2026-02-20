@@ -1,11 +1,11 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import Header from './Header';
+import Sidebar from '../Sidebar';
 import './MainLayout.scss';
 
-import { useAppDispatch } from '../../redux/app/hooks';
-import { fetchCart } from '../../features/cartSlice';
+import { useAppDispatch } from '../../../redux/app/hooks';
+import { fetchCart } from '../../../features/cartSlice';
+import Header from '../header/Header';
 
 const MainLayout: React.FC = () => {
   const dispatch = useAppDispatch();

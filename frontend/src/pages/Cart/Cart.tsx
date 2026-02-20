@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import QuantitySelector from "../../components/common/addToCartBtn/ShowQty";
 import { updateItemQuantity, removeItemFromCart, fetchCart } from "../../features/cartSlice";
 import api from "../../service/getService";
+import { CHECKOUTAPI } from "../../../constant";
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Cart: React.FC = () => {
   const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
     dispatch(updateItemQuantity({ itemId, quantity: newQuantity }));
+    
   };
 
   const handleRemoveItem = (itemId: string) => {
@@ -51,7 +53,7 @@ const Cart: React.FC = () => {
           quantity: item.quantity,
         })),
       };
-      await api.post("/api/v1/checkout", payload);
+      await api.post(CHECKOUTAPI, payload);
       toast.success("Checkout successful!");
       dispatch(fetchCart());
     } catch (error) {
@@ -78,7 +80,7 @@ const Cart: React.FC = () => {
       const userAccount = account;
 
       const contract = new web3.eth.Contract(
-        ContractABI as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+        ContractABI as any,
         contractAddress
       );
 
@@ -92,7 +94,7 @@ const Cart: React.FC = () => {
 
       toast.success("Payment successful!");
 
-      await api.post("/api/v1/checkout", {
+      await api.post(CHECKOUTAPI, {
         txHash: tx.transactionHash,
         amount: total,
       });

@@ -2,11 +2,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import CommonButton from "../../ui/commonButton/CommonButton";
 import FormControl from "../../formik/FormControl";
-import "./ProductModal.scss";
 import { ArrowLeftIcon } from "../../../../assets/icons/svg";
 import { useNavigate, useParams } from "react-router-dom";
 import { createProductApi, updateProductApi, getProductByIdApi } from "../../../../service/getService";
 import { useEffect, useState } from "react";
+import "./ProductModal.scss";
 
 interface Product {
   id?: string;

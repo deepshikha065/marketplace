@@ -13,7 +13,7 @@
       text-align: center;
       padding: 0 4rem 3rem;
 
-      @media (max-width:1439px) {
+      @media (max-width:1679px) {
         padding: 0 1.5rem 1.5rem;
         font-size: 1.8rem;
       }
@@ -62,7 +62,7 @@
           transform: rotate(180deg);
         }
 
-        @media (max-width:1439px) {
+        @media (max-width:1679px) {
           right: 1rem;
         }
       }
@@ -74,8 +74,9 @@
 
     &-body {
       padding: 0 4rem 4rem;
+      color: $white;
 
-      @media (max-width:1439px) {
+      @media (max-width:1679px) {
         padding: 0 2rem 3rem;
       }
 
@@ -88,7 +89,7 @@
       padding-top: 3rem;
 
 
-      @media (max-width:1439px) {
+      @media (max-width:1679px) {
         padding-top: 3rem;
       }
 

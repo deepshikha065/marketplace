@@ -100,7 +100,7 @@
                 color: $theme-text-secondary;
               }
 
-              
+
             }
           }
 
@@ -206,5 +206,18 @@
         }
       }
     }
+  }
+
+  .empty-cart {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 4rem;
+
+    p {
+      font-size: 3rem;
+    }
+
+    // justify-content: space-between;
   }
 }

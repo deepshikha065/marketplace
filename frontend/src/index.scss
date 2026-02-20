@@ -58,7 +58,7 @@ html {
     font-weight: normal;
     background: $theme-bg;
 
-    @media (max-width:1439px) {
+    @media (max-width:1679px) {
       font-size: 1.4rem;
     }
   }
@@ -101,9 +101,9 @@ button {
     box-shadow: none;
   }
 
-  &:disabled {
-    pointer-events: none;
-  }
+  // &:disabled {
+  //   pointer-events: none;
+  // }
 }
 
 img,
@@ -136,7 +136,7 @@ p {
     padding: 0 1.5rem;
   }
 
-  @media (max-width:1439px) {
+  @media (max-width:1679px) {
     max-width: 120rem;
   }
 }
@@ -153,7 +153,7 @@ h1,
 .h1 {
   font-size: 4.4rem;
 
-  @media (max-width:1439px) {
+  @media (max-width:1679px) {
     font-size: 3rem;
   }
 
@@ -170,7 +170,7 @@ h2,
 .h2 {
   font-size: 4rem;
 
-  @media (max-width:1439px) {
+  @media (max-width:1679px) {
     font-size: 3.2rem;
   }
 
@@ -187,7 +187,7 @@ h3,
 .h3 {
   font-size: 3rem;
 
-  @media (max-width:1439px) {
+  @media (max-width:1679px) {
     font-size: 2.4rem;
   }
 
@@ -201,7 +201,7 @@ h4,
   font-size: 2.4rem;
   font-weight: 600;
 
-  @media (max-width:1439px) {
+  @media (max-width:1679px) {
     font-size: 2rem;
   }
 
@@ -213,7 +213,7 @@ h4,
 h5 {
   font-size: 2rem;
 
-  @media (max-width:1439px) {
+  @media (max-width:1679px) {
     font-size: 1.8rem;
   }
 
@@ -225,7 +225,7 @@ h5 {
 h6 {
   font-size: 1.8rem;
 
-  @media (max-width:1439px) {
+  @media (max-width:1679px) {
     font-size: 1.6rem;
   }
 
@@ -285,6 +285,10 @@ input {
       color: $primary;
       background-color: rgba($white, 0.05);
       border-radius: 0.4rem;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
     }
   }
 

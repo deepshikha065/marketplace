@@ -17,7 +17,6 @@ const AddToCartBtn: React.FC<AddToCartBtnProps> = ({
   const dispatch = useAppDispatch();
   const { items } = useAppSelector((state) => state.cart);
 
-  // Check if item is already in cart
   const cartItem = items.find((item) => item.productId === productId);
 
   const handleAddToCart = () => {
@@ -40,7 +39,7 @@ const AddToCartBtn: React.FC<AddToCartBtnProps> = ({
     return (
       <QuantitySelector
         value={cartItem.quantity}
-        min={0} // Allows removing from cart if qty reaches 0
+        min={0}
         onChange={handleUpdateQty}
       />
     );

@@ -6,10 +6,10 @@ export const ROUTES = {
   FORGOT_PASSWORD: "/forgot-password",
   PROFILE: "/profile",
   CHANGE_PASSWORD: "/change-password",
-  PRODUCT_DETAILS: "/product/:id",
+  PRODUCT_DETAILS: "product/:id",
   CART: "/cart",
   PRODUCTS_INFO: "/products-info",
-  ADD_PRODUCT: "/add-product",
-  EDIT_PRODUCT: "/edit-product/:id",
+  ADD_PRODUCT: "add-product",
+  EDIT_PRODUCT: "edit-product/:id",
   TOKEN : "/token"
 };

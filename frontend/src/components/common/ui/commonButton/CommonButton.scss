@@ -77,17 +77,6 @@
         @extend %transition;
       }
     }
-
-    &:hover {
-      background-color: $textblack;
-      color: $white;
-
-      svg {
-        path {
-          fill: $white;
-        }
-      }
-    }
   }
 
   &.red_btn {
@@ -143,7 +132,6 @@
     background: $red;
     color: $white;
     font-weight: 600;
-
   }
 
   &.red_border {
@@ -282,7 +270,7 @@
     color: $blue1D4ED8;
   }
 
-  @media (max-width:1439px) {
+  @media (max-width:1679px) {
     height: 4.5rem;
     font-size: 1.4rem;
   }

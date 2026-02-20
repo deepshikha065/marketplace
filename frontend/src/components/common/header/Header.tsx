@@ -1,12 +1,13 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ProfileIcon, CartIcon, LogoutIcon } from "../../assets/icons/svg";
-import { ROUTES } from "../../constants/routes";
-import { useAppSelector, useAppDispatch } from "../../redux/app/hooks";
-import api from "../../service/getService";
-import CommonButton from "./ui/commonButton/CommonButton";
-import { setAccount } from "../../features/WalletSlice";
-import { logOutUser } from "../../features/userSlice";
+import { ProfileIcon, CartIcon, LogoutIcon } from "../../../assets/icons/svg";
+import { ROUTES } from "../../../constants/routes";
+import { useAppSelector, useAppDispatch } from "../../../redux/app/hooks";
+import api from "../../../service/getService";
+import CommonButton from ".././ui/commonButton/CommonButton";
+import { setAccount } from "../../../features/WalletSlice";
+import { logOutUser } from "../../../features/userSlice";
+import toast from "react-hot-toast";
 import "./Header.scss";
 
 declare global {
@@ -19,7 +20,6 @@ declare global {
 
 const Header: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const [account, setAccount] = useState<string | null>(null);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -27,11 +27,20 @@ const Header: React.FC = () => {
   const { user } = useAppSelector((state) => state.user.user);
   const account = useAppSelector((state) => state.wallet.account) || "";
   const { items: cartItems } = useAppSelector((state) => state.cart);
-  console.log("cartItems", cartItems.length);
+
   const connectWallet = async () => {
     try {
       if (!window.ethereum) {
-        alert("MetaMask is not installed");
+        toast.error("MetaMask is not installed");
+        return;
+      }
+
+      const existingAccounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+
+      if (existingAccounts.length > 0) {
+        dispatch(setAccount(existingAccounts[0]));
         return;
       }
 
@@ -39,7 +48,7 @@ const Header: React.FC = () => {
         method: "eth_requestAccounts",
       });
 
-      dispatch(setAccount(accounts[1]));
+      dispatch(setAccount(accounts[0]));
     } catch (error) {
       console.error("User rejected connection:", error);
     }
@@ -58,6 +67,7 @@ const Header: React.FC = () => {
       dispatch(logOutUser());
       localStorage.removeItem("persist:root");
       navigate(ROUTES.LOGIN);
+      toast.success("Logout successfully");
     }
   };
 
@@ -87,8 +97,11 @@ const Header: React.FC = () => {
           onClick={() => navigate(ROUTES.CART)}
         >
           <CartIcon />
+          {cartItems.length > 0 && (
+            <span className="badge">{cartItems.length}</span>
+          )}
         </button>
-        
+
         <div className="profile-dropdown-container" ref={dropdownRef}>
           <button
             className={`icon-btn profile-btn ${isDropdownOpen ? "active" : ""}`}
@@ -111,7 +124,6 @@ const Header: React.FC = () => {
               </div>
 
               <div className="dropdown-divider"></div>
-
               <button
                 className="dropdown-item"
                 onClick={() => {

@@ -6,6 +6,7 @@ import { ROUTES } from "../../constants/routes";
 import api from "../../service/getService";
 import AddToCartBtn from "../../components/common/addToCartBtn/AddToCartBtn";
 import useDebounce from "../../hooks/useDebounce";
+import { PRODUCTSAPI } from "../../../constant";
 import "./Marketplace.scss";
 
 interface Product {
@@ -44,7 +45,7 @@ const Marketplace: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get("/api/v1/products");
+        const response = await api.get(PRODUCTSAPI);
         setAllProducts(response.data.products || []);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -76,8 +77,6 @@ const Marketplace: React.FC = () => {
 
     return filtered;
   }, [allProducts, debouncedSearch, category, sortOrder]);
-
-
 
   const openDetails = (productId: string | number) => {
     navigate(ROUTES.PRODUCT_DETAILS.replace(":id", productId.toString()));
@@ -136,7 +135,6 @@ const Marketplace: React.FC = () => {
                 <h3>{product.name}</h3>
                 <span className="price">₹{product.price}</span>
               </div>
-
               <p className="description">{product.description}</p>
 
               <div className="product-actions">

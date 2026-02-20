@@ -6,9 +6,9 @@ import FormControl from "../../components/common/formik/FormControl";
 import CommonButton from "../../components/common/ui/commonButton/CommonButton";
 import { useAppDispatch } from "../../redux/app/hooks";
 import { ROUTES } from "../../constants/routes";
-import "./Auth.scss";
 import toast from "react-hot-toast";
 import { adminLogin } from "../../features/userSlice";
+import "./Auth.scss";
 
 interface LoginFormValues {
   email: string;
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
       try {
         const result = await dispatch(adminLogin(
           {
-            email: values.email,
+            email: values.email.trim(),
             password: values.password
           }
         )).unwrap();

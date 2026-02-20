@@ -1,5 +1,13 @@
 import axios from "axios";
-import { ADMIN, BASE_URL, CARTAPI, LOGIN, PRODUCTSAPI, SIGNUP } from "../../constant";
+import {
+  ADMIN,
+  BASE_URL,
+  CARTAPI,
+  FORGOTPASSWORD,
+  LOGIN,
+  PRODUCTSAPI,
+  SIGNUP,
+} from "../../constant";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -40,7 +48,6 @@ export interface SignupPayload {
 }
 
 export const adminLoginApi = async (data: LoginPayload) => {
-  // const res = await api.post("/api/v1/admin/login", data);
   const res = await api.post(LOGIN, data);
   return res.data;
 };
@@ -50,13 +57,13 @@ export const registerUserApi = async (data: SignupPayload) => {
   return res.data;
 };
 
-export const getProductsApi = async () => {
-  const res = await api.get(PRODUCTSAPI);
+export const getProductByIdApi = async (id: string) => {
+  const res = await api.get(`${PRODUCTSAPI}${id}`);
   return res.data;
 };
 
-export const getProductByIdApi = async (id: string) => {
-  const res = await api.get(`${PRODUCTSAPI}${id}`);
+export const forgotPasswordApi = async (email: string) => {
+  const res = await api.post(FORGOTPASSWORD, { email });
   return res.data;
 };
 

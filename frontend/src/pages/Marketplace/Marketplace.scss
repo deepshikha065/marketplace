@@ -88,7 +88,9 @@
       border: 1px solid $theme-border;
       border-radius: 2rem;
       overflow: hidden;
-      @extend %transition;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
 
       .product-image {
         height: 24rem;
@@ -136,6 +138,7 @@
 
       .product-info {
         padding: 2.4rem;
+        margin-top: auto;
 
         .name-price {
           display: flex;

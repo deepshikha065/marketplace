@@ -30,7 +30,7 @@
         caret-color: $textblack;
         border-color: rgba($black, .2);
 
-        @media (max-width:1439px) {
+        @media (max-width:1679px) {
           font-size: 1.4rem;
         }
       }
@@ -41,7 +41,7 @@
         opacity: 1;
         font-size: 1.6rem;
 
-        @media (max-width:1439px) {
+        @media (max-width:1679px) {
           font-size: 1.4rem;
         }
       }
@@ -52,7 +52,7 @@
         caret-color: $greyText;
         font-size: 1.6rem;
 
-        @media (max-width:1439px) {
+        @media (max-width:1679px) {
           font-size: 1.4rem;
         }
       }
@@ -63,7 +63,7 @@
         caret-color: $greyText;
         font-size: 1.6rem;
 
-        @media (max-width:1439px) {
+        @media (max-width:1679px) {
           font-size: 1.4rem;
         }
       }
@@ -85,7 +85,7 @@
         border-color: $primary;
       }
 
-      @media (max-width:1439px) {
+      @media (max-width:1679px) {
         font-size: 1.4rem;
         height: 4.5rem;
         padding-left: 1.5rem;
@@ -191,7 +191,7 @@
     padding: 1.5rem 2rem;
     border-radius: 1rem;
 
-    @media(max-width:1439px) {
+    @media(max-width:1679px) {
       padding: 1.5rem;
     }
   }
@@ -287,7 +287,7 @@
     margin-top: 0.5rem;
   }
 
-  @media (max-width:1439px) {
+  @media (max-width:1679px) {
     & {
       margin-bottom: 1rem;
     }

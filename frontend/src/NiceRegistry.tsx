@@ -1,11 +1,4 @@
+import NiceModal from "@ebay/nice-modal-react";
+import AlertModal from "./components/common/modals/alertModal/AlertModal";
 
-import React from 'react';
-import NiceModal from '@ebay/nice-modal-react';
-
-export const NiceRegistry = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <NiceModal.Provider>
-      {children}
-    </NiceModal.Provider>
-  );
-};
+NiceModal.register("AlertModal", AlertModal);

@@ -6,11 +6,11 @@ import FormControl from '../../components/common/formik/FormControl';
 import CommonButton from '../../components/common/ui/commonButton/CommonButton';
 import { ROUTES } from '../../constants/routes';
 import { useAppDispatch } from '../../redux/app/hooks';
-import './Auth.scss';
 import toast from 'react-hot-toast';
 import { resigterUser } from '../../features/userSlice';
+import './Auth.scss';
 
-interface FormValues {
+interface FormValues {  
   name: string;
   email: string;
   password: string;
@@ -18,7 +18,7 @@ interface FormValues {
 }
 
 const Signup: React.FC = () => {
-
+  
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -30,18 +30,15 @@ const Signup: React.FC = () => {
       confirmPassword: '',
     },
     validationSchema: Yup.object({
-      name: Yup.string().trim().required('Full name is required'),
-      email: Yup.string().trim()
-        .email('Invalid email address')
-        .required('Email is required'),
-      password: Yup.string().trim()
-        .min(8, 'Password must be at least 8 characters')
-        .required('Password is required'),
-      confirmPassword: Yup.string().trim()
+      name: Yup.string().trim().strict(true).required('Full name is required'),
+      email: Yup.string().email('Invalid email address').required('Email is required'),
+      password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+      confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Passwords must match')
         .required('Confirm password is required'),
     }),
     onSubmit: async (values) => {
+      console.log('Sign up values:', values);
       try {
         const result = await dispatch(
           resigterUser({
@@ -108,7 +105,6 @@ const Signup: React.FC = () => {
               error={
                 touched.password && errors.password ? errors.password : ''
               }
-
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}

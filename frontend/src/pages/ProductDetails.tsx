@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeftIcon, StarIcon } from '../assets/icons/svg';
-import './ProductDetails.scss';
 import api from '../service/getService';
 import AddToCartBtn from '../components/common/addToCartBtn/AddToCartBtn';
+import { PRODUCTSAPI } from '../../constant';
+import './ProductDetails.scss';
 
 interface Product {
   id: string | number;
@@ -24,7 +25,7 @@ const ProductDetails: React.FC = () => {
     if (id) {
       const fetchProduct = async () => {
         try {
-          const response = await api.get(`/api/v1/products/${id}`);
+          const response = await api.get(`${PRODUCTSAPI}${id}`);
           setProductData(response.data);
         } catch (error) {
           console.error("Failed to fetch product:", error);
