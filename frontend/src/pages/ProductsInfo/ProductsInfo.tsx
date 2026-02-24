@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect } from 'react';
+import  { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { EditIcon, TrashIcon, PlusIcon, StarIcon, SuccessfullyIcon } from '../../assets/icons/svg';
+import { EditIcon, TrashIcon, PlusIcon, StarIcon } from '../../assets/icons/svg';
 import CommonButton from '../../components/common/ui/commonButton/CommonButton';
 import api from '../../service/getService';
 import { ROUTES } from '../../constants/routes';
 import { useModal } from '@ebay/nice-modal-react';
 import { ADMINPRODUCTSAPI, PRODUCTSAPI } from '../../../constant';
-import './ProductsInfo.scss';
 import toast from 'react-hot-toast';
+import './ProductsInfo.scss';
 
 interface Product {
   id: string;
@@ -23,8 +23,7 @@ interface Product {
 const ProductsInfo = () => {
 
   const navigate = useNavigate();
-  const [products, setProducts] = React.useState<Product[]>([]);
-  const [refresh, setRefresh] = React.useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
 
   const AlertModal = useModal("AlertModal");
   const closeAlertModal = useCallback(() => {
@@ -43,14 +42,13 @@ const ProductsInfo = () => {
       }
     };
     fetchProducts();
-  }, [refresh]);
+  }, []);
 
   const handleDelete = async (id: string) => {
     try {
       const res = await api.delete(`${ADMINPRODUCTSAPI}${id}`);
       console.log('Product deleted:', res.data);
       toast.success('Product deleted successfully');
-      setRefresh(prev => prev + 1);
       closeAlertModal();
     } catch (error) {
       console.error('Error deleting product:', error);
@@ -126,12 +124,10 @@ const ProductsInfo = () => {
                       <EditIcon />
                     </button>
                     <button className="icon-btn delete"
-                      // onClick={() => handleDelete(product.id)}
                       title="Delete"
                       onClick={() => {
                         AlertModal.show({
                           closeAlertModal,
-                          // icon: "?",
                           heading: "Are you sure?",
                           subheading: "Are you sure you want to delete this product?",
                           leftBtnTitle: "Cancel",

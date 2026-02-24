@@ -213,12 +213,12 @@
 
   .loading-state,
   .no-data {
-    padding: 5rem;
+    padding: 5rem !important;
     text-align: center;
     color: $theme-text-secondary;
     background: $theme-card-bg;
     border-radius: 20px;
     border: 1px dashed $theme-border;
-    font-size: 1.6rem;
+    font-size: 2rem;
   }
 }

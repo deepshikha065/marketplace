@@ -22,7 +22,7 @@ const Cart: React.FC = () => {
   const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
     dispatch(updateItemQuantity({ itemId, quantity: newQuantity }));
-    
+
   };
 
   const handleRemoveItem = (itemId: string) => {
@@ -80,7 +80,7 @@ const Cart: React.FC = () => {
       const userAccount = account;
 
       const contract = new web3.eth.Contract(
-        ContractABI as any,
+        ContractABI,
         contractAddress
       );
 
@@ -92,13 +92,12 @@ const Cart: React.FC = () => {
         .transfer(merchantAddress, amountWithDecimals.toString())
         .send({ from: userAccount });
 
-      toast.success("Payment successful!");
-
       await api.post(CHECKOUTAPI, {
         txHash: tx.transactionHash,
         amount: total,
       });
-      // Refresh cart or clear it
+      toast.success("Payment successful!");
+      dispatch(fetchCart());
     } catch (error) {
       console.error("Crypto payment failed:", error);
       toast.error("Payment failed");

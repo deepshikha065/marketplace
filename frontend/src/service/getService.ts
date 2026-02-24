@@ -57,10 +57,6 @@ export const registerUserApi = async (data: SignupPayload) => {
   return res.data;
 };
 
-export const getProductByIdApi = async (id: string) => {
-  const res = await api.get(`${PRODUCTSAPI}${id}`);
-  return res.data;
-};
 
 export const forgotPasswordApi = async (email: string) => {
   const res = await api.post(FORGOTPASSWORD, { email });

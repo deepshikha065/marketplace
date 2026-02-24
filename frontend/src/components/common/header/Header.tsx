@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProfileIcon, CartIcon, LogoutIcon } from "../../../assets/icons/svg";
 import { ROUTES } from "../../../constants/routes";
@@ -9,6 +9,7 @@ import { setAccount } from "../../../features/WalletSlice";
 import { logOutUser } from "../../../features/userSlice";
 import toast from "react-hot-toast";
 import "./Header.scss";
+import { useModal } from "@ebay/nice-modal-react";
 
 declare global {
   interface Window {
@@ -57,10 +58,15 @@ const Header: React.FC = () => {
   const disconnectWallet = () => {
     dispatch(setAccount(null));
   };
+  const AlertModal = useModal("AlertModal");
+  const closeAlertModal = useCallback(() => {
+    AlertModal.remove();
+  }, [AlertModal]);
 
   const handleLogout = async () => {
     try {
       await api.post("/api/auth/logout");
+      closeAlertModal();
     } catch (error) {
       console.log(error);
     } finally {
@@ -135,7 +141,20 @@ const Header: React.FC = () => {
                 <span>View Profile</span>
               </button>
 
-              <button className="dropdown-item logout" onClick={handleLogout}>
+              <button className="dropdown-item logout"
+                onClick={() => {
+                  AlertModal.show({
+                    closeAlertModal,
+                    heading: "Are you sure you want to logout?",
+                    icon: <LogoutIcon />,
+                    // subheading: "Are you sure you want to logout?",
+                    leftBtnTitle: "Cancel",
+                    onClickLeftBtn: () => { AlertModal.remove(); },
+                    rightBtnTitle: "Logout",
+                    onClickRightBtn: () => { handleLogout() },
+                  });
+                }}
+              >
                 <LogoutIcon />
                 <span>Logout</span>
               </button>

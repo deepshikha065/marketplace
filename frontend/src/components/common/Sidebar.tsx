@@ -7,7 +7,6 @@ import { useAppSelector } from '../../redux/app/hooks';
 
 const Sidebar: React.FC = () => {
   const { user } = useAppSelector(state => state.user);
-  const { account } = useAppSelector(state => state.wallet);
 
   if (user.user.role === 'ADMIN') {
     return (

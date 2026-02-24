@@ -4,9 +4,11 @@ import CommonButton from "../../ui/commonButton/CommonButton";
 import FormControl from "../../formik/FormControl";
 import { ArrowLeftIcon } from "../../../../assets/icons/svg";
 import { useNavigate, useParams } from "react-router-dom";
-import { createProductApi, updateProductApi, getProductByIdApi } from "../../../../service/getService";
+import api, { createProductApi, updateProductApi } from "../../../../service/getService";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import "./ProductModal.scss";
+import { PRODUCTSAPI } from "../../../../../constant";
 
 interface Product {
   id?: string;
@@ -33,11 +35,10 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
     if (id && !initialProduct) {
       const fetchProduct = async () => {
         try {
-          const data = await getProductByIdApi(id);
-          setProduct(data);
+          const res = await api.get(`${PRODUCTSAPI}${id}`);
+          setProduct(res.data);
         } catch (error) {
-          console.error("Error fetching product:", error);
-          alert("Failed to fetch product details");
+          toast.error("Failed to fetch product details");
           navigate(-1);
         }
       };
@@ -92,19 +93,18 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
 
         if (product?.id) {
           await updateProductApi(product.id, payload);
-          alert("Product updated successfully");
+          toast.success("Product updated successfully");
           navigate(-1);
         } else {
           await createProductApi(payload);
-          alert("Product created successfully");
+          toast.success("Product created successfully");
           resetForm();
           navigate(-1);
         }
 
       } catch (error: unknown) {
         const err = error as { response?: { data?: { message?: string } } };
-        console.error("Error saving product:", err?.response?.data || error);
-        alert(err?.response?.data?.message || "Error saving product");
+        toast.error(err?.response?.data?.message || "Error saving product");
       } finally {
         setSubmitting(false);
       }
@@ -119,10 +119,9 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
           <span>Back to Product</span>
         </button>
       </div>
+      
       <form className="product-form" onSubmit={formik.handleSubmit}>
         <div className="form-grid">
-
-          {/* Product Name */}
           <div className="form-group full-width">
             <label>Product Name</label>
             <FormControl
@@ -134,8 +133,6 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
               error={formik.touched.name && typeof formik.errors.name === 'string' ? formik.errors.name : undefined}
             />
           </div>
-
-          {/* Description */}
           <div className="form-group full-width">
             <label>Description</label>
             <FormControl
@@ -149,7 +146,6 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
             />
           </div>
 
-          {/* Price */}
           <div className="form-group">
             <label>Price ($)</label>
             <FormControl
@@ -163,7 +159,6 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
             />
           </div>
 
-          {/* Items Available */}
           <div className="form-group">
             <label>Available Items</label>
             <FormControl
@@ -179,7 +174,6 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
             />
           </div>
 
-          {/* Category */}
           <div className="form-group">
             <label>Category</label>
             <FormControl
@@ -192,7 +186,6 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
             />
           </div>
 
-          {/* Status */}
           <div className="form-group">
             <label>Status</label>
             <FormControl
@@ -208,7 +201,6 @@ const ProductModal = ({ product: initialProduct }: ProductModalProps) => {
             />
           </div>
 
-          {/* Image */}
           <div className="form-group full-width">
             <label>Image URL</label>
             <FormControl
