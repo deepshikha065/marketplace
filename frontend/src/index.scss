@@ -299,3 +299,20 @@ input {
     font-size: 1.5rem;
   }
 }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  justify-content: center;
+  margin-top: 4rem;
+
+  button {
+    color: $white;
+
+    &:disabled {
+      opacity: 0.3;
+      cursor:default;
+    }
+  }
+}

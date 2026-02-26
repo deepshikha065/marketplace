@@ -4,6 +4,7 @@ export const BASE_URL = "http://localhost:3000/";
 
 export const SIGNUP = "/api/auth/signup";
 export const LOGIN = "/api/auth/login";
+export const LOGOUT = "/api/auth/logout";
 
 export const ADMIN = "/api/v1/admin";
 export const ADMINPRODUCTSAPI = "/api/v1/admin/products/"

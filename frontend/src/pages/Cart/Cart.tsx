@@ -4,7 +4,6 @@ import { ArrowLeftIcon, LogoutIcon } from "../../assets/icons/svg";
 import CommonButton from "../../components/common/ui/commonButton/CommonButton";
 import { ROUTES } from "../../constants/routes";
 import "./Cart.scss";
-import Web3 from "web3";
 import ContractABI from "../../contract/ContractABI.json";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import toast from "react-hot-toast";
@@ -12,12 +11,19 @@ import QuantitySelector from "../../components/common/addToCartBtn/ShowQty";
 import { updateItemQuantity, removeItemFromCart, fetchCart } from "../../features/cartSlice";
 import api from "../../service/getService";
 import { CHECKOUTAPI } from "../../../constant";
+import { useWriteContract, useSwitchChain, useAccount } from "wagmi";
+import { parseEther } from "viem";
+
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { items: cartItems, status } = useAppSelector((state) => state.cart);
-  const { account } = useAppSelector((state) => state.wallet);
+  const { address, chainId } = useAccount();
+  const { writeContractAsync } = useWriteContract();
+  const { switchChain } = useSwitchChain();
+
+  const TARGET_CHAIN_ID = 97;
 
   const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -65,45 +71,72 @@ const Cart: React.FC = () => {
   const contractAddress = "0x3f85aE8A8c760D4c2cEfE6691452aC73d5a11929";
   const merchantAddress = "0x89D3292830107e6abd5b613be1BE80463A091C3D";
 
+
+  // const handleCryptoCheckout = async () => {
+  //   if (!address) {
+  //     toast.error("Please Connect wallet");
+  //     return;
+  //   }
+
+  //   try {
+  //     const contract = new web3.eth.Contract(
+  //       ContractABI as any,
+  //       contractAddress
+  //     );
+
+  //     const amountWithDecimals = BigInt(
+  //       web3.utils.toWei(total.toString(), "ether")
+  //     );
+
+  //     const tx = await contract.methods
+  //       .transfer(merchantAddress, amountWithDecimals.toString())
+  //       .send({ from: contextAccount });
+
+  //     await api.post(CHECKOUTAPI, {
+  //       txHash: tx.transactionHash,
+  //       amount: total,
+  //     });
+  //     toast.success("Payment successful!");
+  //     dispatch(fetchCart());
+  //   } catch (error) {
+  //     console.error("Crypto payment failed:", error);
+  //     toast.error("Payment failed");
+  //   }
+  // };
   const handleCryptoCheckout = async () => {
-    if (!window.ethereum) {
-      toast.error("Install MetaMask");
-      return;
-    }
-    if (!account) {
-      toast.error("Please Connect wallet");
+    if (!address) {
+      toast.error("Please connect wallet");
       return;
     }
 
     try {
-      const web3 = new Web3(window.ethereum);
-      const userAccount = account;
 
-      const contract = new web3.eth.Contract(
-        ContractABI,
-        contractAddress
-      );
+      if (chainId !== TARGET_CHAIN_ID) {
+        await switchChain({ chainId: TARGET_CHAIN_ID });
+      }
 
-      const amountWithDecimals = BigInt(
-        new Web3().utils.toWei(total.toString(), "ether")
-      );
+      const amountInWei = parseEther(total.toString());
 
-      const tx = await contract.methods
-        .transfer(merchantAddress, amountWithDecimals.toString())
-        .send({ from: userAccount });
+      const hash = await writeContractAsync({
+        address: contractAddress,
+        abi: ContractABI,
+        functionName: "transfer",
+        args: [merchantAddress, amountInWei],
+        chainId: TARGET_CHAIN_ID,
+      });
 
       await api.post(CHECKOUTAPI, {
-        txHash: tx.transactionHash,
+        txHash: hash,
         amount: total,
       });
+
       toast.success("Payment successful!");
       dispatch(fetchCart());
     } catch (error) {
-      console.error("Crypto payment failed:", error);
+      console.error(error);
       toast.error("Payment failed");
     }
   };
-
   if (status === 'loading' && cartItems.length === 0) {
     return <div className="cart-page"><p>Loading cart...</p></div>;
   }

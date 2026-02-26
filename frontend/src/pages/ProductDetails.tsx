@@ -13,7 +13,7 @@ interface Product {
   description: string;
   category: string;
   rating: number;
-  image: string;
+image: string;
 }
 
 const ProductDetails: React.FC = () => {

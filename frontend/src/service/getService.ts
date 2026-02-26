@@ -5,7 +5,6 @@ import {
   CARTAPI,
   FORGOTPASSWORD,
   LOGIN,
-  PRODUCTSAPI,
   SIGNUP,
 } from "../../constant";
 
@@ -56,7 +55,6 @@ export const registerUserApi = async (data: SignupPayload) => {
   const res = await api.post(SIGNUP, data);
   return res.data;
 };
-
 
 export const forgotPasswordApi = async (email: string) => {
   const res = await api.post(FORGOTPASSWORD, { email });

@@ -5,19 +5,14 @@ import { ROUTES } from "../../../constants/routes";
 import { useAppSelector, useAppDispatch } from "../../../redux/app/hooks";
 import api from "../../../service/getService";
 import CommonButton from ".././ui/commonButton/CommonButton";
-import { setAccount } from "../../../features/WalletSlice";
 import { logOutUser } from "../../../features/userSlice";
 import toast from "react-hot-toast";
-import "./Header.scss";
 import { useModal } from "@ebay/nice-modal-react";
+import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { injected } from 'wagmi/connectors'
+import { LOGOUT } from "../../../../constant";
+import "./Header.scss";
 
-declare global {
-  interface Window {
-    ethereum?: {
-      request: (args: { method: string; params?: unknown[] }) => Promise<string[]>;
-    };
-  }
-}
 
 const Header: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -26,38 +21,13 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user.user);
-  const account = useAppSelector((state) => state.wallet.account) || "";
   const { items: cartItems } = useAppSelector((state) => state.cart);
 
-  const connectWallet = async () => {
-    try {
-      if (!window.ethereum) {
-        toast.error("MetaMask is not installed");
-        return;
-      }
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect()
+  const { disconnect } = useDisconnect()
 
-      const existingAccounts = await window.ethereum.request({
-        method: "eth_accounts",
-      });
 
-      if (existingAccounts.length > 0) {
-        dispatch(setAccount(existingAccounts[0]));
-        return;
-      }
-
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-
-      dispatch(setAccount(accounts[0]));
-    } catch (error) {
-      console.error("User rejected connection:", error);
-    }
-  };
-
-  const disconnectWallet = () => {
-    dispatch(setAccount(null));
-  };
   const AlertModal = useModal("AlertModal");
   const closeAlertModal = useCallback(() => {
     AlertModal.remove();
@@ -65,7 +35,7 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      await api.post("/api/auth/logout");
+      await api.post(LOGOUT);
       closeAlertModal();
     } catch (error) {
       console.log(error);
@@ -76,6 +46,11 @@ const Header: React.FC = () => {
       toast.success("Logout successfully");
     }
   };
+  const handleDisconnect = async () => {
+    await disconnect();
+    localStorage.removeItem("wagmi.store");
+    toast.success("Wallet disconnected");
+  };
 
   return (
     <header className="main-header">
@@ -83,15 +58,20 @@ const Header: React.FC = () => {
       <div className="header-right">
         {user.role !== "ADMIN" && (
           <>
-            {!account ? (
-              <CommonButton title="Connect Wallet" onClick={connectWallet} />
+            {!isConnected ? (
+              <CommonButton
+                title="Connect Wallet"
+                onClick={() => connect({ connector: injected() })}
+              />
             ) : (
               <>
                 <CommonButton
-                  title={`${account.slice(0, 6)}...${account.slice(-4)}`}
-                // title={account}
+                  title={`${address?.slice(0, 6)}...${address?.slice(-4)}`}
                 />
-                <CommonButton title="Disconnect" onClick={disconnectWallet} />
+                <CommonButton
+                  title="Disconnect"
+                  onClick={handleDisconnect}
+                />
               </>
             )}
           </>
@@ -139,7 +119,7 @@ const Header: React.FC = () => {
               >
                 <ProfileIcon />
                 <span>View Profile</span>
-              </button>
+              </button> 
 
               <button className="dropdown-item logout"
                 onClick={() => {

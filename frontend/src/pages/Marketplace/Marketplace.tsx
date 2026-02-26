@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { StarIcon } from "../../assets/icons/svg";
+import { LeftArrow, RightArrow, StarIcon } from "../../assets/icons/svg";
 import FormControl from "../../components/common/formik/FormControl";
 import { ROUTES } from "../../constants/routes";
 import api from "../../service/getService";
@@ -23,11 +23,15 @@ interface Product {
 const Marketplace: React.FC = () => {
   const navigate = useNavigate();
 
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [sortOrder, setSortOrder] = useState("default");
-  const debouncedSearch = useDebounce(search, 1000);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [limit] = useState(8);
+
+  const debouncedSearch = useDebounce(search, 500);
 
   const categoryOptions = [
     { value: "all", label: "All Categories" },
@@ -36,6 +40,7 @@ const Marketplace: React.FC = () => {
     { value: "sports", label: "Sports" },
     { value: "furniture", label: "Furniture" },
   ];
+
   const sortOptions = [
     { value: "default", label: "Sort By" },
     { value: "low-high", label: "Price: Low to High" },
@@ -45,38 +50,29 @@ const Marketplace: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get(PRODUCTSAPI);
-        setAllProducts(response.data.products || []);
+        const response = await api.get(PRODUCTSAPI, {
+          params: {
+            page,
+            limit,
+            search: debouncedSearch,
+            category: category !== "all" ? category : undefined,
+            sort: sortOrder !== "default" ? sortOrder : undefined,
+          },
+        });
+
+        setProducts(response.data.products || []);
+        setTotalPages(response.data.pagination?.totalPages || 1);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
+
     fetchProducts();
-  }, []);
-  const filteredProducts = useMemo(() => {
-    let filtered = allProducts.filter((product) => {
-      const searchText = debouncedSearch.toLowerCase();
+  }, [page, limit, debouncedSearch, category, sortOrder]);
 
-      const matchesSearch =
-        product.name?.toLowerCase().includes(searchText) ||
-        product.description?.toLowerCase().includes(searchText) ||
-        product.category?.toLowerCase().includes(searchText);
-
-      const matchesCategory =
-        category === "all" ||
-        product.category?.toLowerCase() === category.toLowerCase();
-
-      return matchesSearch && matchesCategory;
-    });
-
-    if (sortOrder === "low-high") {
-      filtered = [...filtered].sort((a, b) => a.price - b.price);
-    } else if (sortOrder === "high-low") {
-      filtered = [...filtered].sort((a, b) => b.price - a.price);
-    }
-
-    return filtered;
-  }, [allProducts, debouncedSearch, category, sortOrder]);
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, category, sortOrder]);
 
   const openDetails = (productId: string | number) => {
     navigate(ROUTES.PRODUCT_DETAILS.replace(":id", productId.toString()));
@@ -89,6 +85,7 @@ const Marketplace: React.FC = () => {
           <h1 className="h2">Marketplace</h1>
           <p>Explore our curated collection of premium products</p>
         </div>
+
         <div className="header-actions">
           <div className="search-wrapper">
             <FormControl
@@ -96,9 +93,12 @@ const Marketplace: React.FC = () => {
               placeholder="Search products..."
               className="marketplace-search"
               value={search}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearch(e.target.value)
+              }
             />
           </div>
+
           <FormControl
             control="select"
             name="category"
@@ -107,6 +107,7 @@ const Marketplace: React.FC = () => {
             className="marketplace-select"
             onChange={(value: string) => setCategory(value || "all")}
           />
+
           <FormControl
             control="select"
             name="sort"
@@ -115,11 +116,12 @@ const Marketplace: React.FC = () => {
             className="marketplace-select"
             onChange={(value: string) => setSortOrder(value || "default")}
           />
-
         </div>
       </div>
+
+      {/* PRODUCTS GRID */}
       <div className="products-grid">
-        {filteredProducts.map((product) => (
+        {products.map((product) => (
           <div className="product-card" key={product.id}>
             <div className="product-image">
               <img src={product.image} alt={product.name} />
@@ -135,6 +137,7 @@ const Marketplace: React.FC = () => {
                 <h3>{product.name}</h3>
                 <span className="price">₹{product.price}</span>
               </div>
+
               <p className="description">{product.description}</p>
 
               <div className="product-actions">
@@ -152,7 +155,29 @@ const Marketplace: React.FC = () => {
         ))}
       </div>
 
-      {filteredProducts.length === 0 && (
+      {products.length > 0 && (
+        <div className="pagination">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((prev) => prev - 1)}
+          >
+            <LeftArrow />
+          </button>
+
+          <span>
+            Page {page} of {totalPages}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage((prev) => prev + 1)}
+          > 
+            <RightArrow />
+          </button>
+        </div>
+      )}
+
+      {products.length === 0 && (
         <div className="empty-state">No products found.</div>
       )}
     </div>
